@@ -6,15 +6,15 @@
 
 # Section 2. Jobster Landing
 
-## 3 Landing Page - Setup
+## 3 Landing Page
 
-## 4. Landing Page - Structure
+## 4. Styled Components - Basics
 
-## 5. Styled Components - Basics
-
-## 6. Style Landing Page
+## 5. Style Landing Page
 
 # Section 3. Error Page
+
+## 6. Style Landing Page
 
 ## 7.
 
