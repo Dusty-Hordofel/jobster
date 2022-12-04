@@ -13,7 +13,8 @@
 - [Styled Components](https://styled-components.com/docs/basics#installation)
 
 ```sh
-npm install --save styled-components
+$ npm install --save styled-components
+$ npm install react-router-dom
 
 ```
 
