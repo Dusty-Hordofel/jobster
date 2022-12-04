@@ -1,49 +1,71 @@
-# Section 1. Folder structure
+## Section 1. Folder structure
 
-## 1. create client and server folders
+### 1. create client and server folders
 
-## 2. update client base folders
+### 2. update client base folders
 
-# Section 2. Jobster Landing
+## Section 2. Jobster Landing
 
-## 3 Landing Page
+### 3 Landing Page
 
-## 4. Styled Components - Basics
+### 4. Styled Components - Basics
 
-## 5. Style Landing Page
+- [Styled Components](https://styled-components.com/docs/basics#installation)
 
-# Section 3. Error Page
+```sh
+npm install --save styled-components
 
-## 6. Style Landing Page
+```
 
-## 7.
+```js
+import styled from "styled-components";
 
-## 8.
+const El = styled.el`
+  // styles go here
+`;
+```
 
-## 9.
+- import styled-components to `<Landing/>`
+-
 
-## 10.
+### 5. Style Landing Page
 
-## 11.
+## Section 3. Error Page
 
-## 12.
+### 6. Style Landing Page
 
-## 13.
+### 7.
 
-## 14.
+### 8.
 
-## 15.
+### 9.
 
-## 16.
+### 10.
 
-## 17.
+### 11.
 
-## 18.
+### 12.
 
-## 19.
+### 13.
 
-## 20.
+### 14.
 
-## 21.
+### 15.
 
-## 22.
+### 16.
+
+### 17.
+
+### 18.
+
+### 19.
+
+### 20.
+
+### 21.
+
+### 22.
+
+```
+
+```
