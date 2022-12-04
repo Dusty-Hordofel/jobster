@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import FormRow from "../components/FormRow";
 import Logo from "../components/Logo";
@@ -61,7 +62,7 @@ const Register = () => {
     const { name, email, password, isMember } = values;
     if (!email || !password || (!isMember && !name)) {
       // check the name if isMember is false (!isMember && !name)
-      console.log("Please Fill Out All Fields");
+      toast.error("Please Fill Out All Fields");
       return;
     }
   };

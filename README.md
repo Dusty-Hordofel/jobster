@@ -157,6 +157,46 @@ const onSubmit = (e) => {
 
 ### 13. React Toastify
 
+[React Toastify](https://www.npmjs.com/package/react-toastify)
+
+```sh
+$ npm install --save react-toastify
+```
+
+App.js
+
+```js
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+return </Routes>
+ <ToastContainer />
+ <BrowserRouter>
+```
+
+Register.js
+
+```js
+import { toast } from "react-toastify";
+
+if (!email || !password || (!isMember && !name)) {
+  // check the name if isMember is false (!isMember && !name)
+  toast.error("Please Fill Out All Fields");
+  return;
+}
+```
+
+- modifications
+- <ToastContainer  position="top-center"/>
+
+index.css
+
+```css
+.Toastify__toast {
+  text-transform: capitalize;
+}
+```
+
 ### 14. User Slice - Setup
 
 ### 15. Register and Login Placeholders
