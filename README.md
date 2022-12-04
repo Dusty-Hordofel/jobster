@@ -43,33 +43,91 @@ const El = styled.el`
 
 ### 8. Error Page
 
-### 9. Auto Imports
+## Section 4. Register Page
 
-### 10.
+### 9. Register Page - Setup
 
-### 11.
+### 10. FormRow Component
 
-### 12.
+### 11. Toggle Member
 
-### 13.
+### 12. Handle Change and Empty Values
 
-### 14.
+### 13. React Toastify
 
-### 15.
+### 14. User Slice - Setup
 
-### 16.
+### 15. Register and Login Placeholders
 
-### 17.
+### 16. HTTP Methods
 
-### 18.
+### 17. Jobs API
 
-### 19.
+### 18. Axios CustomFetch Instance
 
-### 20.
+### 19. Testing Register - HTTP(AJAX) Request
 
-### 21.
+### 20. Register User - HTTP(AJAX) Request
 
-### 22.
+### 21. Login User - HTTP(AJAX) Request
+
+### 22. Local Storage
+
+### 23. Programmatically Navigate To Dashboard
+
+### 24.
+
+### 25.
+
+### 26.
+
+### 27.
+
+### 28.
+
+### 29.
+
+### 30.
+
+### 31.
+
+### 32.
+
+### 33.
+
+### 34.
+
+### 35.
+
+### 36.
+
+### 37.
+
+### 38.
+
+### 39.
+
+### 40.
+
+### 41.
+
+### 42.
+
+### 43.
+
+### 44.
+
+### 45.
+
+### 46.
+
+### 47.
+
+### 48.
+
+### 49.
+
+### 50.
 
 ```
 
