@@ -47,6 +47,10 @@ const El = styled.el`
 
 ### 9. Register Page - Setup
 
+- add initial state to ` <Register/>`
+- add useState value and create handleChange and onSubmit functions.
+- update ` <Register/>` content and style it using styled-components.
+
 ### 10. FormRow Component
 
 ### 11. Toggle Member
