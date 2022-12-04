@@ -129,6 +129,32 @@ const toggleMember = () => {
 
 ### 12. Handle Change and Empty Values
 
+[Dynamic Object Keys](https://www.youtube.com/watch?v=_qxCYtWm0tw)
+
+- update handleChange and onSubmit to handle empty values
+
+```js
+const handleChange = (e) => {
+  // console.log(e.target);
+  const name = e.target.name;
+  const value = e.target.value;
+
+  console.log(`${name} :${value}`);
+  setValues({ ...values, [name]: value });
+};
+
+const onSubmit = (e) => {
+  e.preventDefault();
+  // console.log(e.target);
+  const { name, email, password, isMember } = values;
+  if (!email || !password || (!isMember && !name)) {
+    // check the name if isMember is false (!isMember && !name)
+    console.log("Please Fill Out All Fields");
+    return;
+  }
+};
+```
+
 ### 13. React Toastify
 
 ### 14. User Slice - Setup
