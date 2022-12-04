@@ -27,13 +27,15 @@ const El = styled.el`
 ```
 
 - import styled-components to `<Landing/>`
--
 
 ### 5. Style Landing Page
 
 ## Section 3. Error Page
 
-### 6. Style Landing Page
+### 6. Setup Pages
+
+- create ` <Error/>` ` <Register/>` `<Dasboard/>` pages
+- export ` <Error/>` ` <Register/>` `<Dasboard/>` `<Landing/>` from index.js to `<App/>`
 
 ### 7.
 
