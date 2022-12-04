@@ -80,6 +80,53 @@ const FormRow = ({ type, name, value, handleChange, labelText }) => {
 
 ### 11. Toggle Member
 
+- create toggleMember() in ` <Register/>` to handle ` <FormRow/>` showned!
+
+```js
+const toggleMember = () => {
+  setValues({ ...values, isMember: !values.isMember });
+};
+```
+
+- add a conditional rendering for form title and name input fields
+
+```js
+{
+  /* control h3 */
+}
+<h3>{values.isMember ? "Login" : "Register"}</h3>;
+{
+  /* toggle name */
+}
+{
+  !values.isMember && (
+    <FormRow
+      type="text"
+      name="name"
+      value={values.name}
+      handleChange={handleChange}
+    />
+  );
+}
+```
+
+- add a conditional rendering for form title and toggle btn
+
+```js
+{
+  /* right after submit btn */
+}
+{
+  /* toggle btn */
+}
+<p>
+  {values.isMember ? " Not a member yet?" : "Already a member?"}
+  <button type="button" onClick={toggleMember} className="member-btn">
+    {values.isMember ? "Register" : "Login"}
+  </button>
+</p>;
+```
+
 ### 12. Handle Change and Empty Values
 
 ### 13. React Toastify
