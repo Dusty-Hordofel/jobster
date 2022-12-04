@@ -53,6 +53,31 @@ const El = styled.el`
 
 ### 10. FormRow Component
 
+- create ` <FormRow/>` in <b>components</b> to handle the input Registration.
+- setup one for email and password in ` <Register/>`
+- hint "type,name,value"
+
+```js
+const FormRow = ({ type, name, value, handleChange, labelText }) => {
+  return (
+    <div className="form-row">
+      <label htmlFor={name} className="form-label">
+        {labelText || name}
+      </label>
+      <input
+        type={type}
+        value={value}
+        name={name}
+        onChange={handleChange}
+        className="form-input"
+      />
+    </div>
+  );
+};
+```
+
+- import ` <FormRow/>` to ` <Register/>`
+
 ### 11. Toggle Member
 
 ### 12. Handle Change and Empty Values

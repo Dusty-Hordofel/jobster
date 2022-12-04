@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import FormRow from "../components/FormRow";
 import Logo from "../components/Logo";
 
 const Wrapper = styled.section`
@@ -60,18 +61,26 @@ const Register = () => {
         <Logo />
         <h3>Login</h3>
         {/* name field */}
-        <div className="form-row">
-          <label htmlFor="name" className="form-label">
-            name
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={values.name}
-            onChange={handleChange}
-            className="form-input"
-          ></input>
-        </div>
+        <FormRow
+          type="text"
+          name="name"
+          value={values.name}
+          handleChange={handleChange}
+        />
+        {/* email field */}
+        <FormRow
+          type="email"
+          name="email"
+          value={values.email}
+          handleChange={handleChange}
+        />
+        {/* password field */}
+        <FormRow
+          type="password"
+          name="password"
+          value={values.password}
+          handleChange={handleChange}
+        />
         <button type="submit" className="btn btn-block">
           submit
         </button>
