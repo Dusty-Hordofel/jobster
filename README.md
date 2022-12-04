@@ -37,11 +37,13 @@ const El = styled.el`
 - create ` <Error/>` ` <Register/>` `<Dasboard/>` pages
 - export ` <Error/>` ` <Register/>` `<Dasboard/>` `<Landing/>` from index.js to `<App/>`
 
-### 7.
+### 7. React Router - Setup
 
-### 8.
+- add ` <Error/>` ` <Register/>` `<Dasboard/>` Routes
 
-### 9.
+### 8. Error Page
+
+### 9. Auto Imports
 
 ### 10.
 
