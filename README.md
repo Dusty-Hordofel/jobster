@@ -389,7 +389,12 @@ npm start
 
 ### 27. Generate Token - Instance Method
 
-### 28.
+### 28. JWT_SECRET and JWT_LIFETIME
+
+- use all keys generator to generate a JWT_SECRET
+  [all keys generator](https://allkeysgenerator.com/)
+
+- add JWT_LIFETIME & JWT_SECRET in .env variable
 
 ### 29.
 
