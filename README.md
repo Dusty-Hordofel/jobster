@@ -312,7 +312,7 @@ axios.patch(url, ressource, options);
 axios.delete(url, options);
 ```
 
-### 17. Axios CustomFetch Instance
+<!-- ### 17. Axios CustomFetch Instance
 
 - utils/axios.js
 
@@ -321,11 +321,9 @@ import axios from "axios";
 const customFetch = axios.create({ baseURL: "http://" });
 
 export default customFetch;
-```
+``` -->
 
-### 18.
-
-### 19. Testing Register - HTTP(AJAX) Request
+<!-- ### 19. Testing Register - HTTP(AJAX) Request
 
 ### 20. Register User - HTTP(AJAX) Request
 
@@ -333,7 +331,26 @@ export default customFetch;
 
 ### 22. Local Storage
 
-### 23. Programmatically Navigate To Dashboard
+### 23. Programmatically Navigate To Dashboard -->
+
+## Section 5. Jobster API
+
+### 17. Backend Folder structure
+
+- create server folder
+- add stater folder for Jobster API
+
+### 18.
+
+### 19.
+
+### 20.
+
+### 21.
+
+### 22.
+
+### 23.
 
 ### 24.
 
