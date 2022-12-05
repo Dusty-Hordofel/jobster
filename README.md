@@ -296,6 +296,22 @@ const onSubmit = (e) => {
 
 ### 16. HTTP Methods
 
+- GET - get ressources from the server
+- POST - submit ressource to the server
+- PUT/PATCH - modify ressource on the server
+- DELETE - delete ressource from the server
+
+```js
+//GET
+axios.get(url, options);
+//POST
+axios.post(url, ressource, options);
+//PATCH
+axios.patch(url, ressource, options);
+//DELETE
+axios.delete(url, options);
+```
+
 ### 17. Jobs API
 
 ### 18. Axios CustomFetch Instance
