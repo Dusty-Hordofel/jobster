@@ -312,9 +312,9 @@ axios.patch(url, ressource, options);
 axios.delete(url, options);
 ```
 
-### 17. Jobs API
+### 17. Axios CustomFetch Instance
 
-### 18. Axios CustomFetch Instance
+### 18.
 
 ### 19. Testing Register - HTTP(AJAX) Request
 
