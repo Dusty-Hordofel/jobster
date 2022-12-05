@@ -348,7 +348,7 @@ npm install <package>@latest
 
 - create .env and add provide below values
 
-```js
+```bash
 MONGO_URI=
 JWT_SECRET=
 JWT_LIFETIME=
@@ -362,7 +362,7 @@ npm start
 
 - you should see "Server is listening ...." text
 
-### 18.
+### 18. set auth and job controllers
 
 ### 19.
 
