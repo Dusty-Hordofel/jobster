@@ -364,7 +364,10 @@ npm start
 
 ### 18. set auth and job controllers
 
-### 19.
+### 19. create routes
+
+- create auth and job routes
+- add auth and job to app.js
 
 ### 20.
 

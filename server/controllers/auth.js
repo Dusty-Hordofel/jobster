@@ -4,3 +4,5 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   res.send("login user");
 };
+
+module.exports = { register, login };
