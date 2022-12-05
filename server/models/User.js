@@ -47,6 +47,7 @@ UserSchema.pre("save", async function () {
 
 // generate a token
 UserSchema.methods.createJWT = function () {
+  //in a function we access a document using this!
   return jwt.sign(
     { userId: this._id, name: this.name },
     process.env.JWT_SECRET,
