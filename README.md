@@ -387,9 +387,9 @@ npm start
 
 ### 26. Generate Token - Controller
 
-### 27.
+### 27. Generate Token - Instance Method
 
-### 28. Generate Token - Instance Method
+### 28.
 
 ### 29.
 
