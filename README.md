@@ -379,15 +379,22 @@ npm start
 
 ### 23. Error Checking - Controller Example
 
-### 24. Hashing Password Info
+### 24. Hash User Password
 
-### 25. Hash User Password
+- use bcryptjs to hash user password
 
-### 26. Mongoose Middleware
+### 25. Mongoose Middleware
 
-### 27. Generate Token - Controller
+### 26. Generate Token - Controller
 
-### 28. Generate Token - Instance Method
+### 27. Generate Token - Instance Method
+
+### 28. JWT_SECRET and JWT_LIFETIME
+
+- use all keys generator to generate a JWT_SECRET
+  [all keys generator](https://allkeysgenerator.com/)
+
+- add JWT_LIFETIME & JWT_SECRET in .env variable
 
 ### 29.
 
