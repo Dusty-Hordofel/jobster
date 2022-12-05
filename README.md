@@ -231,14 +231,14 @@ export const store = configureStore({
 - index.js
 
 ```js
-import{store}from "./store";
-import {Provider} from "react-redux";
+import { store } from "./store";
+import { Provider } from "react-redux";
 
 root.render(
   <Provider store={store}>
-  <App tab="home">
+    <App tab="home" />
   </Provider>
-  )
+);
 ```
 
 ```sh
@@ -246,6 +246,53 @@ $ npm install @reduxjs/toolkit react-redux
 ```
 
 ### 15. Register and Login Placeholders
+
+- userSlice.js
+
+```js
+// communicate with our backend
+export const registerUser = createAsyncThunk(
+  "user/registerUser",
+  async (user, thunkAPI) => {
+    console.log(`Register User: ${user}`);
+  }
+);
+// communicate with our backend
+export const loginUser = createAsyncThunk(
+  "user/loginUser",
+  async (user, thunkAPI) => {
+    console.log(`Login User: ${user}`);
+  }
+);
+```
+
+- Register.js
+
+```js
+import { useSelector, useDispatch } from "react-redux";
+import { loginUser, registerUser } from "../features/user/userSlice";
+
+const Register = () => {
+  const dispatch = useDispatch();
+  const { isLoading, user } = useSelector((store) => store.user);
+};
+
+const onSubmit = (e) => {
+  e.preventDefault();
+  // console.log(e.target);
+  const { name, email, password, isMember } = values;
+  if (!email || !password || (!isMember && !name)) {
+    // check the name if isMember is false (!isMember && !name)
+    toast.error("Please Fill Out All Fields");
+    return;
+  }
+  if (isMember) {
+    dispatch(loginUser({ email, password }));
+    return;
+  }
+  dispatch(RegisterUser({ name, email, password }));
+};
+```
 
 ### 16. HTTP Methods
 

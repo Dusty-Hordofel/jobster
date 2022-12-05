@@ -3,6 +3,9 @@ import { toast } from "react-toastify";
 import styled from "styled-components";
 import FormRow from "../components/FormRow";
 import Logo from "../components/Logo";
+import { useSelector, useDispatch } from "react-redux";
+import { loginUser, registerUser } from "../features/user/userSlice";
+// import { loginUser, registerUser } from "../features/user/userSlice";
 
 const Wrapper = styled.section`
   display: grid;
@@ -47,6 +50,9 @@ const initialState = {
 const Register = () => {
   const [values, setValues] = useState(initialState);
 
+  const dispatch = useDispatch();
+  const { isLoading, user } = useSelector((store) => store.user); //we get these value from our store.
+
   const handleChange = (e) => {
     // console.log(e.target);
     const name = e.target.name;
@@ -65,6 +71,11 @@ const Register = () => {
       toast.error("Please Fill Out All Fields");
       return;
     }
+    if (isMember) {
+      dispatch(loginUser({ email, password })); //this is what we except { email, password }, we call it user in userSlice
+      return;
+    }
+    dispatch(registerUser({ name, email, password })); //this is what we except { name,email, password }, we call it user in userSlice
   };
 
   const toggleMember = () => {
