@@ -367,9 +367,11 @@ npm start
 ### 19. create routes
 
 - create auth and job routes
-- add auth and job to app.js
+- import auth and job to app.js
 
-### 20.
+### 20. Database Connection
+
+- connect our app to jobster database
 
 ### 21.
 
