@@ -314,6 +314,15 @@ axios.delete(url, options);
 
 ### 17. Axios CustomFetch Instance
 
+- utils/axios.js
+
+```js
+import axios from "axios";
+const customFetch = axios.create({ baseURL: "http://" });
+
+export default customFetch;
+```
+
 ### 18.
 
 ### 19. Testing Register - HTTP(AJAX) Request
