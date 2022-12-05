@@ -339,6 +339,28 @@ export default customFetch;
 
 - create server folder
 - add stater folder for Jobster API
+- install dependencies
+
+```bash
+npm install
+npm install <package>@latest
+```
+
+- create .env and add provide below values
+
+```js
+MONGO_URI=
+JWT_SECRET=
+JWT_LIFETIME=
+```
+
+- start the project
+
+```js
+npm start
+```
+
+- you should see "Server is listening ...." text
 
 ### 18.
 
