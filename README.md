@@ -339,28 +339,55 @@ export default customFetch;
 
 - create server folder
 - add stater folder for Jobster API
+- install dependencies
 
-### 18.
+```bash
+npm install
+npm install <package>@latest
+```
 
-### 19.
+- create .env and add provide below values
 
-### 20.
+```bash
+MONGO_URI=
+JWT_SECRET=
+JWT_LIFETIME=
+```
 
-### 21.
+- start the project
 
-### 22.
+```js
+npm start
+```
 
-### 23.
+- you should see "Server is listening ...." text
 
-### 24.
+### 18. set auth and job controllers
 
-### 25.
+### 19. create routes
 
-### 26.
+- create auth and job routes
+- import auth and job to app.js
 
-### 27.
+### 20. Database Connection
 
-### 28.
+- connect our app to jobster database
+
+### 21. User Schema
+
+### 22. Create User - Basic Setup
+
+### 23. Error Checking - Controller Example
+
+### 24. Hashing Password Info
+
+### 25. Hash User Password
+
+### 26. Mongoose Middleware
+
+### 27. Generate Token - Controller
+
+### 28. Generate Token - Instance Method
 
 ### 29.
 
