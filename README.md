@@ -373,21 +373,21 @@ npm start
 
 - connect our app to jobster database
 
-### 21.
+### 21. User Schema
 
-### 22.
+### 22. Create User - Basic Setup
 
-### 23.
+### 23. Error Checking - Controller Example
 
-### 24.
+### 24. Hashing Password Info
 
-### 25.
+### 25. Hash User Password
 
-### 26.
+### 26. Mongoose Middleware
 
-### 27.
+### 27. Generate Token - Controller
 
-### 28.
+### 28. Generate Token - Instance Method
 
 ### 29.
 
