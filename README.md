@@ -379,13 +379,15 @@ npm start
 
 ### 23. Error Checking - Controller Example
 
-### 24. Hashing Password Info
+### 24. Hash User Password
 
-### 25. Hash User Password
+- use bcryptjs to hash user password
 
-### 26. Mongoose Middleware
+### 25. Mongoose Middleware
 
-### 27. Generate Token - Controller
+### 26. Generate Token - Controller
+
+### 27.
 
 ### 28. Generate Token - Instance Method
 
