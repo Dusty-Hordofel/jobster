@@ -402,9 +402,11 @@ npm start
 
 ### 29. Login Controller Setup & Compare Password
 
-### 30. Auth Middleware - Setup
+### 30. Auth Middleware - Setup & Testing
 
-### 31. Auth Middleware - Testing
+- create Auth Middleware and add it to our Auth routes
+
+### 31.
 
 ### 32.
 
