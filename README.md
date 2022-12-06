@@ -4,7 +4,7 @@
 
 ### 2. update client base folders
 
-## Section 2. Jobster Landing
+## Section 2. Mosala Landing
 
 ### 3 Landing Page
 
@@ -333,14 +333,14 @@ export default customFetch;
 
 ### 23. Programmatically Navigate To Dashboard -->
 
-# PARTIE II. Jobster API
+# PARTIE II. Mosala API
 
-## Section 5. Jobster API
+## Section 5. Mosala API
 
 ### 17. Backend Folder structure
 
 - create server folder
-- add stater folder for Jobster API
+- add stater folder for Mosala API
 - install dependencies
 
 ```bash
@@ -373,7 +373,7 @@ npm start
 
 ### 20. Database Connection
 
-- connect our app to jobster database
+- connect our app to Mosala database
 
 ### 21. User Schema
 
@@ -690,7 +690,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
 module.exports = errorHandlerMiddleware;
 ```
 
-## section 9. security documentation
+## section 9. security and documentation
 
 ### 39. Security Info and Packages
 
@@ -741,8 +741,13 @@ $ npm i helmet cors xss-clean express-rate-limit dotenv
 
 ### 45. Add Swagger UI
 
-- add [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) and [yamljs](https://www.npmjs.com/package/yamljs) to our application
-- create a swagger.yamljs file and paste `Swagger UI ` content
+- create a swagger.yaml file and paste `Swagger UI ` content
+- add [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) and [yamljs](https://www.npmjs.com/package/yamljs) to our application (app.js)
+- test our API documentation
+
+# PARTIE II. Update Mosala API
+
+## section 9.
 
 ### 46.
 
@@ -753,7 +758,3 @@ $ npm i helmet cors xss-clean express-rate-limit dotenv
 ### 49.
 
 ### 50.
-
-```
-
-```
