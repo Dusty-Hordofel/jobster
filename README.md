@@ -404,11 +404,90 @@ npm start
 
 ### 30. Auth Middleware - Setup & Testing
 
-- create Auth Middleware and add it to our Auth routes
+- create Auth Middleware and add test it in our Job routes
+
+```js
+const User = require("../models/User");
+const jwt = require("jsonwebtoken"); //to verify the token
+const { UnauthenticatedError } = require("../errors"); //handle errors
+const { request } = require("express");
+
+const auth = async (req, res, next) => {
+  // check header
+  const authHeader = req.headers.authorization; //
+  if (!authHeader || !authHeader.startsWith("Bearer")) {
+    throw new UnauthenticatedError("Authentication invalid");
+  } //check if authorization header has the required value
+
+  const token = authHeader.split(" ")[1]; //retrieve the token value in authHeader witch is after the "Bearer"
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET); //verify the token value
+
+    // attach the user to the job routes
+    const testUser = payload.userId === "638e13e5d5b81bfa972cc35c";
+
+    // const user = User.findById(payload.id).select("-password");//look for the user int the database
+    // request.user = user;
+
+    req.user = { userId: payload.userId, testUser }; //get the id from the token make us sure there is a user logged in alcontrary of to get id from the database.
+
+    next();
+  } catch (error) {
+    throw new UnauthenticatedError("Authentication invalid");
+  }
+};
+
+module.exports = auth;
+```
 
 ## section 8. Job API
 
 ### 31. Job Model
+
+- create a job model using Mongoose
+
+```js
+const mongoose = require("mongoose");
+
+const JobSchema = new mongoose.Schema(
+  {
+    company: {
+      type: String,
+      required: [true, "Please provide company name"],
+      maxlength: 50,
+    },
+    position: {
+      type: String,
+      required: [true, "Please provide position"],
+      maxlength: 100,
+    },
+    status: {
+      type: String,
+      enum: ["interview", "declined", "pending"],
+      default: "pending",
+    },
+    createdBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: [true, "Please provide user"],
+    },
+    jobType: {
+      type: String,
+      enum: ["full-time", "part-time", "remote", "internship"],
+      default: "full-time",
+    },
+    jobLocation: {
+      type: String,
+      default: "my city",
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("Job", JobSchema);
+```
 
 ### 32. Create Job Route
 
