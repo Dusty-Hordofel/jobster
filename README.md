@@ -551,7 +551,35 @@ const getAllJobs = async (req, res, next) => {
 
 ### 34. Set Token Dynamically in Postman
 
+- todo later
+
 ### 35. Get Single Job
+
+- get a single job using userId and jobId parameter
+
+```js
+const getJob = async (req, res) => {
+  const {
+    user: { userId },
+    params: { id: jobId },
+  } = req;
+
+  const job = await Job.findOne({
+    _id: jobId,
+    createdBy: userId,
+  });
+  if (!job) {
+    throw new NotFoundError(`No job with id ${jobId}`);
+  }
+  res.status(StatusCodes.OK).json({ job });
+};
+```
+
+- test `getJob` controller in Postman
+
+```js
+ GET http://localhost:xxx/xx/xx/xxx/:id
+```
 
 ### 36. Update Job
 
