@@ -692,6 +692,18 @@ module.exports = errorHandlerMiddleware;
 
 ### 39. Security Info and Packages
 
+- helmet
+- cors
+- xss-clean
+- express-rate-limit
+
+```
+$ npm i helmet cors xss-clean express-rate-limit dotenv
+
+```
+
+- npm i [helmet](https://www.npmjs.com/package/helmet) [cors](https://www.npmjs.com/package/cors) [xss-clean](https://www.npmjs.com/package/xss-clean) [express-rate-limit dotenv](https://www.npmjs.com/package/express-rate-limit)
+
 ### 40.
 
 ### 41.
