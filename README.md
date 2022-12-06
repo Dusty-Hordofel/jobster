@@ -524,6 +524,31 @@ const createJob = async (req, res) => {
 
 ### 33.Get All Jobs
 
+- get only the job associated to the user
+
+```js
+const getAllJobs = async (req, res, next) => {
+  //console.log(req.user.userId);
+
+  try {
+    //get all job associated to the userId
+    const jobs = await Job.find({ createdBy: req.user.userId }).sort(
+      "createdAt"
+    );
+
+    res.status(StatusCodes.OK).json({ jobs, count: jobs.length });
+  } catch (error) {
+    console.log("🚀 ~ file: jobs.js:14 ~ getAllJobs ~ error", error);
+  }
+};
+```
+
+- test `getAllJobs` controller in Postman
+
+```js
+ GET http://localhost:xxx/xx/xx/xxx
+```
+
 ### 34. Set Token Dynamically in Postman
 
 ### 35. Get Single Job
