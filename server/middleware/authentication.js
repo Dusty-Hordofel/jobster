@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken"); //to verify the token
 const { UnauthenticatedError } = require("../errors"); //handle errors
+const { request } = require("express");
 
 const auth = async (req, res, next) => {
   // check header
@@ -16,6 +17,10 @@ const auth = async (req, res, next) => {
 
     // attach the user to the job routes
     const testUser = payload.userId === "638e13e5d5b81bfa972cc35c";
+
+    // const user = User.findById(payload.id).select("-password");
+    // request.user = user;
+
     req.user = { userId: payload.userId, testUser };
     next();
   } catch (error) {
