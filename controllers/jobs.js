@@ -12,6 +12,13 @@ const getAllJobs = async (req, res, next) => {
   res.status(StatusCodes.OK).json({ jobs, count: jobs.length });
 };
 
+const getAllUserJobs = async (req, res, next) => {
+  //get all jobs
+  const jobs = await Job.find().sort("createdAt");
+
+  res.status(StatusCodes.OK).json({ jobs, count: jobs.length });
+};
+
 const getJob = async (req, res) => {
   const {
     user: { userId }, //from Auth Middleware
@@ -89,4 +96,5 @@ module.exports = {
   getAllJobs,
   updateJob,
   getJob,
+  getAllUserJobs,
 };
