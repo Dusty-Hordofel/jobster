@@ -404,27 +404,293 @@ npm start
 
 ### 30. Auth Middleware - Setup & Testing
 
-- create Auth Middleware and add it to our Auth routes
+- create Auth Middleware and add test it in our Job routes
 
-### 31.
+```js
+const User = require("../models/User");
+const jwt = require("jsonwebtoken"); //to verify the token
+const { UnauthenticatedError } = require("../errors"); //handle errors
+const { request } = require("express");
 
-### 32.
+const auth = async (req, res, next) => {
+  // check header
+  const authHeader = req.headers.authorization; //
+  if (!authHeader || !authHeader.startsWith("Bearer")) {
+    throw new UnauthenticatedError("Authentication invalid");
+  } //check if authorization header has the required value
+
+  const token = authHeader.split(" ")[1]; //retrieve the token value in authHeader witch is after the "Bearer"
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET); //verify the token value
+
+    // attach the user to the job routes
+    const testUser = payload.userId === "638e13e5d5b81bfa972cc35c";
+
+    // const user = User.findById(payload.id).select("-password");//look for the user int the database
+    // request.user = user;
+
+    req.user = { userId: payload.userId, testUser }; //get the id from the token make us sure there is a user logged in alcontrary of to get id from the database.
+
+    next();
+  } catch (error) {
+    throw new UnauthenticatedError("Authentication invalid");
+  }
+};
+
+module.exports = auth;
+```
 
 ## section 8. Job API
 
-### 33.Job Model
+### 31. Job Model
 
-### 34.
+- create a job model using Mongoose
 
-### 35.
+```js
+const mongoose = require("mongoose");
 
-### 36.
+const JobSchema = new mongoose.Schema(
+  {
+    company: {
+      type: String,
+      required: [true, "Please provide company name"],
+      maxlength: 50,
+    },
+    position: {
+      type: String,
+      required: [true, "Please provide position"],
+      maxlength: 100,
+    },
+    status: {
+      type: String,
+      enum: ["interview", "declined", "pending"],
+      default: "pending",
+    },
+    createdBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: [true, "Please provide user"],
+    },
+    jobType: {
+      type: String,
+      enum: ["full-time", "part-time", "remote", "internship"],
+      default: "full-time",
+    },
+    jobLocation: {
+      type: String,
+      default: "my city",
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
-### 37.
+module.exports = mongoose.model("Job", JobSchema);
+```
 
-### 38.
+### 32. Create Job Route
 
-### 39.
+- try to create a new job in Postman using our job model
+
+```sh
+{
+    "company":"Google",
+    "position":"intern",
+    "status":"pending",
+    "createdBy":"638e13e5d5b81bfa972cc35c",//we don't need to add that , it's automatically added to the document
+    "jobType":"full-time",
+    "jobLocation":"Congo"
+}
+```
+
+- update our job createJob controller
+
+```js
+const Job = require("../models/Job");
+const { StatusCodes } = require("http-status-codes");
+const { BadRequestError, NotFoundError } = require("../errors");
+const mongoose = require("mongoose");
+
+const createJob = async (req, res) => {
+  req.body.createdBy = req.user.userId; // it's located in req.body, console.log(req.body) to get information
+  const job = await Job.create(req.body);
+  res.status(StatusCodes.CREATED).json({ job });
+
+  // res.json(req.body);//test created job
+  // res.json(req.user);//test user token
+};
+```
+
+### 33.Get All Jobs
+
+- get only the job associated to the user
+
+```js
+const getAllJobs = async (req, res, next) => {
+  //console.log(req.user.userId);//from Auth Middleware
+
+  try {
+    //get all job associated to the userId
+    const jobs = await Job.find({ createdBy: req.user.userId }).sort(
+      "createdAt"
+    );
+
+    res.status(StatusCodes.OK).json({ jobs, count: jobs.length });
+  } catch (error) {
+    console.log("🚀 ~ file: jobs.js:14 ~ getAllJobs ~ error", error);
+  }
+};
+```
+
+- test `getAllJobs` controller in Postman
+
+```js
+ GET http://localhost:xxx/xx/xx/xxx
+```
+
+### 34. Set Token Dynamically in Postman
+
+- todo later
+
+### 35. Get Single Job
+
+- get a single job using userId and jobId parameter
+
+```js
+const getJob = async (req, res) => {
+  const {
+    user: { userId }, //from Auth Middleware
+    params: { id: jobId }, //from params
+  } = req;
+
+  const job = await Job.findOne({
+    _id: jobId,
+    createdBy: userId,
+  });
+  if (!job) {
+    throw new NotFoundError(`No job with id ${jobId}`);
+  }
+  res.status(StatusCodes.OK).json({ job });
+};
+```
+
+- test `getJob` controller in Postman
+
+```js
+ GET http://localhost:xxx/xx/xx/xxx/:id
+```
+
+### 36. Update Job
+
+- update job information using userId and jobId
+
+```js
+const updateJob = async (req, res) => {
+  const {
+    body: { company, position }, //from the body
+    user: { userId }, //from Auth Middleware
+    params: { id: jobId }, //from params
+  } = req;
+
+  if (company === "" || position === "") {
+    throw new BadRequestError("Company or Position fields cannot be empty");
+  }
+  const job = await Job.findByIdAndUpdate(
+    { _id: jobId, createdBy: userId },
+    req.body,
+    { new: true, runValidators: true }
+  );
+  if (!job) {
+    throw new NotFoundError(`No job with id ${jobId}`);
+  }
+  res.status(StatusCodes.OK).json({ job });
+};
+```
+
+- test `updateJob` controller in Postman
+
+```js
+ PATCH http://localhost:xxx/xx/xx/xxx/:id
+```
+
+### 37. Remove Job
+
+- remove a job using userId and jobId
+
+```js
+const deleteJob = async (req, res) => {
+  const {
+    user: { userId }, //from Auth Middleware
+    params: { id: jobId }, //from the params
+  } = req;
+
+  const job = await Job.findByIdAndRemove({
+    _id: jobId,
+    createdBy: userId,
+  });
+  if (!job) {
+    throw new NotFoundError(`No job with id ${jobId}`);
+  }
+  res.status(StatusCodes.OK).send();
+};
+```
+
+- test `deleteJob` controller in Postman
+
+```js
+ DELETE http://localhost:xxx/xx/xx/xxx/:id
+```
+
+### 38. Duplicate Error, Custom Error, Validation Error, Cast Error
+
+- Validation Errors
+- Duplicate (Email)
+- Cast Error
+
+```js
+const { StatusCodes } = require("http-status-codes");
+const errorHandlerMiddleware = (err, req, res, next) => {
+  //Custom Error:
+  let customError = {
+    // set default
+    statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
+    msg: err.message || "Something went wrong try again later",
+  };
+
+  // if (err instanceof CustomAPIError) {
+  //   return res.status(err.statusCode).json({ msg: err.message })
+  // }
+
+  //validation Error:
+  if (err.name === "ValidationError") {
+    customError.msg = Object.values(err.errors)
+      .map((item) => item.message)
+      .join(",");
+    customError.statusCode = 400;
+  }
+
+  //Duplicate Error:
+  if (err.code && err.code === 11000) {
+    customError.msg = `Duplicate value entered for ${Object.keys(
+      err.keyValue
+    )} field, please choose another value`;
+    customError.statusCode = 400;
+  }
+
+  //Cast Error:
+  if (err.name === "CastError") {
+    customError.msg = `No item found with id : ${err.value}`;
+    customError.statusCode = 404;
+  }
+
+  return res.status(customError.statusCode).json({ msg: customError.msg });
+};
+
+module.exports = errorHandlerMiddleware;
+```
+
+### 39. Security Info and Packages
 
 ### 40.
 
