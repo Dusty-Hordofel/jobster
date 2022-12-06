@@ -528,7 +528,7 @@ const createJob = async (req, res) => {
 
 ```js
 const getAllJobs = async (req, res, next) => {
-  //console.log(req.user.userId);
+  //console.log(req.user.userId);//from Auth Middleware
 
   try {
     //get all job associated to the userId
@@ -560,8 +560,8 @@ const getAllJobs = async (req, res, next) => {
 ```js
 const getJob = async (req, res) => {
   const {
-    user: { userId },
-    params: { id: jobId },
+    user: { userId }, //from Auth Middleware
+    params: { id: jobId }, //from params
   } = req;
 
   const job = await Job.findOne({
@@ -583,12 +583,14 @@ const getJob = async (req, res) => {
 
 ### 36. Update Job
 
+- update job information using userId and jobId
+
 ```js
 const updateJob = async (req, res) => {
   const {
-    body: { company, position },
-    user: { userId },
-    params: { id: jobId },
+    body: { company, position }, //from the body
+    user: { userId }, //from Auth Middleware
+    params: { id: jobId }, //from params
   } = req;
 
   if (company === "" || position === "") {
@@ -613,6 +615,32 @@ const updateJob = async (req, res) => {
 ```
 
 ### 37. Remove Job
+
+- remove a job using userId and jobId
+
+```js
+const deleteJob = async (req, res) => {
+  const {
+    user: { userId }, //from Auth Middleware
+    params: { id: jobId }, //from the params
+  } = req;
+
+  const job = await Job.findByIdAndRemove({
+    _id: jobId,
+    createdBy: userId,
+  });
+  if (!job) {
+    throw new NotFoundError(`No job with id ${jobId}`);
+  }
+  res.status(StatusCodes.OK).send();
+};
+```
+
+- test `deleteJob` controller in Postman
+
+```js
+ DELETE http://localhost:xxx/xx/xx/xxx/:id
+```
 
 ### 38. Duplicate Error
 

@@ -4,7 +4,7 @@ const { BadRequestError, NotFoundError } = require("../errors");
 const mongoose = require("mongoose");
 
 const getAllJobs = async (req, res, next) => {
-  // console.log(req.user.userId);
+  // console.log(req.user.userId);//from Auth Middleware
 
   //get all job associated to the userId
   const jobs = await Job.find({ createdBy: req.user.userId }).sort("createdAt");
@@ -14,8 +14,8 @@ const getAllJobs = async (req, res, next) => {
 
 const getJob = async (req, res) => {
   const {
-    user: { userId },
-    params: { id: jobId },
+    user: { userId }, //from Auth Middleware
+    params: { id: jobId }, //from params
   } = req;
 
   const job = await Job.findOne({
@@ -44,9 +44,9 @@ const createJob = async (req, res) => {
 
 const updateJob = async (req, res) => {
   const {
-    body: { company, position },
-    user: { userId },
-    params: { id: jobId },
+    body: { company, position }, //from body
+    user: { userId }, //from Auth Middleware
+    params: { id: jobId }, //from params
   } = req;
 
   if (company === "" || position === "") {
@@ -63,8 +63,24 @@ const updateJob = async (req, res) => {
   res.status(StatusCodes.OK).json({ job });
 };
 
-const deleteJob = async (req, res, next) => {
-  res.send("delete job");
+const deleteJob = async (req, res) => {
+  //destruction of user abd job values
+  const {
+    user: { userId }, //from Auth Middleware
+    params: { id: jobId }, //from params
+  } = req;
+
+  //find a job with userId and jobId
+  const job = await Job.findByIdAndRemove({
+    _id: jobId,
+    createdBy: userId,
+  });
+
+  //verify if the job exists
+  if (!job) {
+    throw new NotFoundError(`No job with id ${jobId}`);
+  }
+  res.status(StatusCodes.OK).send();
 };
 
 module.exports = {
