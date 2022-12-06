@@ -739,7 +739,10 @@ $ npm i helmet cors xss-clean express-rate-limit dotenv
 
 - test `Swagger UI ` API creating a new user and a new job with that user's token
 
-### 45.
+### 45. Add Swagger UI
+
+- add [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) and [yamljs](https://www.npmjs.com/package/yamljs) to our application
+- create a swagger.yamljs file and paste `Swagger UI ` content
 
 ### 46.
 
