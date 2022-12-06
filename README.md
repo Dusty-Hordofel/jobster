@@ -690,13 +690,31 @@ const errorHandlerMiddleware = (err, req, res, next) => {
 module.exports = errorHandlerMiddleware;
 ```
 
+## section 9. security documentation
+
 ### 39. Security Info and Packages
 
-### 40.
+- helmet
+- cors
+- xss-clean
+- express-rate-limit
 
-### 41.
+```
+$ npm i helmet cors xss-clean express-rate-limit dotenv
 
-### 42.
+```
+
+- npm i [helmet](https://www.npmjs.com/package/helmet) [cors](https://www.npmjs.com/package/cors) [xss-clean](https://www.npmjs.com/package/xss-clean) [express-rate-limit dotenv](https://www.npmjs.com/package/express-rate-limit)
+
+### 40. Export Postman Docs
+
+- use [Swagger UI](https://swagger.io/tools/swagger-ui/) to clone an existing project
+
+### 41. APIMATIC
+
+- use [APIMATIC](https://www.apimatic.io/apidocs/apimatic/) to format Postman documentation
+
+### 42. Render Deployment
 
 ### 43.
 
