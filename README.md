@@ -491,6 +491,37 @@ module.exports = mongoose.model("Job", JobSchema);
 
 ### 32. Create Job Route
 
+- try to create a new job in Postman using our job model
+
+```sh
+{
+    "company":"Google",
+    "position":"intern",
+    "status":"pending",
+    "createdBy":"638e13e5d5b81bfa972cc35c",//we don't need to add that , it's automatically added to the document
+    "jobType":"full-time",
+    "jobLocation":"Congo"
+}
+```
+
+- update our job createJob controller
+
+```js
+const Job = require("../models/Job");
+const { StatusCodes } = require("http-status-codes");
+const { BadRequestError, NotFoundError } = require("../errors");
+const mongoose = require("mongoose");
+
+const createJob = async (req, res) => {
+  req.body.createdBy = req.user.userId; // it's located in req.body, console.log(req.body) to get information
+  const job = await Job.create(req.body);
+  res.status(StatusCodes.CREATED).json({ job });
+
+  // res.json(req.body);//test created job
+  // res.json(req.user);//test user token
+};
+```
+
 ### 33.Get All Jobs
 
 ### 34. Set Token Dynamically in Postman

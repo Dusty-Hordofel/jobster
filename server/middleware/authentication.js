@@ -22,6 +22,7 @@ const auth = async (req, res, next) => {
     // request.user = user;
 
     req.user = { userId: payload.userId, testUser }; //get the id from the token make us sure there is a user logged in alcontrary of to get id from the database.
+
     next();
   } catch (error) {
     throw new UnauthenticatedError("Authentication invalid");
