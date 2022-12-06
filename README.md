@@ -406,31 +406,31 @@ npm start
 
 - create Auth Middleware and add it to our Auth routes
 
-### 31.
-
-### 32.
-
 ## section 8. Job API
 
-### 33.Job Model
+### 31. Job Model
 
-### 34.
+### 32. Create Job Route
 
-### 35.
+### 33.Get All Jobs
 
-### 36.
+### 34. Set Token Dynamically in Postman
 
-### 37.
+### 35. Get Single Job
 
-### 38.
+### 36. Update Job
 
-### 39.
+### 37. Remove Job
 
-### 40.
+### 38. Duplicate Error
 
-### 41.
+### 39. Custom Error
 
-### 42.
+### 40. Validation Error
+
+### 41. Cast Error
+
+### 42. Security Info and Packages
 
 ### 43.
 
