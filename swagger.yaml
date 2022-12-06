@@ -1,0 +1,302 @@
+openapi: 3.0.0
+info:
+  title: Masolo
+  contact: {}
+  version: "1.0"
+servers:
+  - url: http://localhost:3000/api/v1
+    variables: {}
+paths:
+  /jobs:
+    post:
+      tags:
+        - job
+      summary: Create a job
+      operationId: Createajob
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreateajobRequest"
+                - example:
+                    company: Teslak3
+                    position: intern
+                    status: pending
+                    jobType: full-time
+                    jobLocation: Congo
+            example:
+              company: Teslak3
+              position: intern
+              status: pending
+              jobType: full-time
+              jobLocation: Congo
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+
+  /admin/jobs/all:
+    get:
+      tags:
+        - job
+      summary: Get All jobs
+      operationId: GetAlljobs
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+
+  /jobs/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The job ID
+    get:
+      tags:
+        - job
+      summary: get a job
+      operationId: getajob
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+
+    patch:
+      tags:
+        - job
+      summary: update job
+      operationId: updatejob
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/updatejobrequest"
+                - example:
+                    company: Tesla34
+                    position: intern
+                    status: pending
+                    jobType: full-time
+                    jobLocation: Congo
+            example:
+              company: Tesla34
+              position: intern
+              status: pending
+              jobType: full-time
+              jobLocation: Congo
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+
+    delete:
+      tags:
+        - job
+      summary: delete
+      operationId: delete
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /auth/register:
+    post:
+      tags:
+        - user
+      summary: Register
+      operationId: Register
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/RegisterRequest"
+                - example:
+                    name: johny
+                    email: dojo@gmail.com
+                    password: "123456"
+            example:
+              name: johny
+              email: dojo@gmail.com
+              password: "123456"
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/login:
+    post:
+      tags:
+        - user
+      summary: Login
+      operationId: Login
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/LoginRequest"
+                - example:
+                    name: johny
+                    email: dojo@gmail.com
+                    password: "123456"
+            example:
+              name: johny
+              email: dojo@gmail.com
+              password: "123456"
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+components:
+  schemas:
+    CreateajobRequest:
+      title: CreateajobRequest
+      required:
+        - company
+        - position
+        - status
+        - jobType
+        - jobLocation
+      type: object
+      properties:
+        company:
+          type: string
+        position:
+          type: string
+        status:
+          type: string
+        jobType:
+          type: string
+        jobLocation:
+          type: string
+      example:
+        company: Teslak3
+        position: intern
+        status: pending
+        jobType: full-time
+        jobLocation: Congo
+    updatejobrequest:
+      title: updatejobrequest
+      required:
+        - company
+        - position
+        - status
+        - jobType
+        - jobLocation
+      type: object
+      properties:
+        company:
+          type: string
+        position:
+          type: string
+        status:
+          type: string
+        jobType:
+          type: string
+        jobLocation:
+          type: string
+      example:
+        company: Tesla34
+        position: intern
+        status: pending
+        jobType: full-time
+        jobLocation: Congo
+    deleterequest:
+      title: deleterequest
+      required:
+        - company
+        - position
+        - status
+        - jobType
+        - jobLocation
+      type: object
+      properties:
+        company:
+          type: string
+        position:
+          type: string
+        status:
+          type: string
+        jobType:
+          type: string
+        jobLocation:
+          type: string
+      example:
+        company: Tesla34
+        position: intern
+        status: pending
+        jobType: full-time
+        jobLocation: Congo
+    RegisterRequest:
+      title: RegisterRequest
+      required:
+        - name
+        - email
+        - password
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        name: johny
+        email: dojo@gmail.com
+        password: "123456"
+    LoginRequest:
+      title: LoginRequest
+      required:
+        - name
+        - email
+        - password
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        name: johny
+        email: dojo@gmail.com
+        password: "123456"
+  securitySchemes:
+    httpBearer:
+      type: http
+      scheme: bearer
+security:
+  - httpBearer: []
+tags:
+  - name: job
+  - name: user

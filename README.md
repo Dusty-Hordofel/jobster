@@ -712,15 +712,37 @@ $ npm i helmet cors xss-clean express-rate-limit dotenv
 
 ### 41. APIMATIC
 
+- export Postman documentation
 - use [APIMATIC](https://www.apimatic.io/apidocs/apimatic/) to format Postman documentation
 
 ### 42. Render Deployment
 
-### 43.
+### 43. APIMATIC Setup
 
-### 44.
+### 44. Swagger UI Editor
 
-### 45.
+- use [Swagger UI Editor](https://editor.swagger.io/) & paste our open openapi: 3.0.0 we've exported from APIMATIC Setup.
+- use [Swagger UI params](https://swagger.io/docs/specification/describing-parameters/) to change the exported params.
+
+- remove the hard coded `/jobs/638ec54143d443d1bc967638:` parameters in [Swagger UI params](https://swagger.io/docs/specification/describing-parameters/) and paste the script below for each parameter
+
+```js
+/user/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: The user ID
+```
+
+- test `Swagger UI ` API creating a new user and a new job with that user's token
+
+### 45. Add Swagger UI
+
+- add [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) and [yamljs](https://www.npmjs.com/package/yamljs) to our application
+- create a swagger.yamljs file and paste `Swagger UI ` content
 
 ### 46.
 
