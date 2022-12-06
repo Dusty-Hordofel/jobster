@@ -749,7 +749,36 @@ $ npm i helmet cors xss-clean express-rate-limit dotenv
 
 ## section 9.
 
-### 46.
+### 46. Update User - Setup
+
+- add `updateUser` controller in `Auth.js`
+
+```js
+const updateUser = async (req, res) => {
+  const { email, name, lastName, location } = req.body;
+  if (!email || !name || !lastName || !location) {
+    throw new BadRequest("Please provide all values");
+  }
+  const user = await User.findOne({ _id: req.user.userId });
+
+  user.email = email;
+  user.name = name;
+  user.lastName = lastName;
+  user.location = location;
+
+  await user.save();
+  const token = user.createJWT();
+  res.status(StatusCodes.OK).json({
+    user: {
+      email: user.email,
+      lastName: user.lastName,
+      location: user.location,
+      name: user.name,
+      token,
+    },
+  });
+};
+```
 
 ### 47.
 

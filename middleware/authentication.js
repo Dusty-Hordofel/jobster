@@ -20,7 +20,7 @@ const auth = async (req, res, next) => {
 
     // const user = User.findById(payload.id).select("-password");//look for the user int the database
     // request.user = user;
-    req.user = { userId: payload.userId, name: payload.name };
+    req.user = { userId: payload.userId, name: payload.name }; //we attach user to the request
     // req.user = { userId: payload.userId, testUser }; //get the id from the token make us sure there is a user logged in alcontrary of to get id from the database.
 
     next();
