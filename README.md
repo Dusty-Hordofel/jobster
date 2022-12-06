@@ -333,6 +333,8 @@ export default customFetch;
 
 ### 23. Programmatically Navigate To Dashboard -->
 
+# PARTIE II. Jobster API
+
 ## Section 5. Jobster API
 
 ### 17. Backend Folder structure
@@ -396,15 +398,21 @@ npm start
 
 - add JWT_LIFETIME & JWT_SECRET in .env variable
 
-### 29.
+## section 7. Login API
 
-### 30.
+### 29. Login Controller Setup & Compare Password
+
+### 30. Auth Middleware - Setup & Testing
+
+- create Auth Middleware and add it to our Auth routes
 
 ### 31.
 
 ### 32.
 
-### 33.
+## section 8. Job API
+
+### 33.Job Model
 
 ### 34.
 
