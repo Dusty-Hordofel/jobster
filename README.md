@@ -780,9 +780,51 @@ const updateUser = async (req, res) => {
 };
 ```
 
-### 47.
+### 47. Password "Gotcha"
 
-### 48.
+- this.modifiedPaths();
+
+```js
+UserSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+```
+
+### 47. Fake Data - Mockaroo
+
+- use [Mockaroo](https://mockaroo.com/) random generator to add fake data
+- create mock-data.json (root)
+- provide test user id
+
+### 48. Populate Database
+
+populate.js
+
+```js
+require("dotenv").config();
+
+const mockData = require("./mock-data.json");
+
+const Job = require("./models/Job");
+const connectDB = require("./db/connect");
+
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI);
+
+    await Job.create(mockData);
+    console.log("Success!!!");
+    process.exit(0);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
+
+start();
+```
 
 ### 49.
 
