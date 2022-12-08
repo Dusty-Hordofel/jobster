@@ -1241,7 +1241,7 @@ export const getUserFromLocalStorage = () => {
 
 invoke getUserFromLocalStorage when app loads (set it equal to user)
 
-````js
+```js
 const initialState = {
   isLoading: false,
   user: getUserFromLocalStorage(),
@@ -1264,12 +1264,30 @@ const initialState = {
       toast.success(`Welcome Back ${user.name}`);
     },
 
-    ```
+```
+
 ### 66. Programmatically Navigate To Dashboard
+
+Register.js
+
+```js
+import { useNavigate } from "react-router-dom";
+
+const Register = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  }, [user, navigate]);
+};
+```
 
 ### 67.
 
 ### 68.
 
 ### 69.
-````
