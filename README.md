@@ -992,8 +992,6 @@ app.use(express.static(path.resolve(__dirname, "./client/build")));
 
 ### 59. Setup Status Aggregation Pipeline
 
-<<<<<<< Updated upstream
-
 ### 60. Refactor Status Data
 
 =======
@@ -1285,6 +1283,8 @@ const Register = () => {
   }, [user, navigate]);
 };
 ```
+
+Section x: Dashboard Setup
 
 ### 67.
 
