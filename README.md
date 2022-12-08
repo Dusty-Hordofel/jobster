@@ -1776,12 +1776,16 @@ const BigSidebar = () => {
 export default BigSidebar;
 ```
 
-### 76.
+# Section 12: Profile
 
-### 77.
+### 76. Profile Page - Intro
 
-### 78.
+### 77. Profile Page - Setup
 
-### 79.
+### 78. Auth Request Overview
 
-### 80.
+### 79. Update User - Complete
+
+### 80. Authentication Error
+
+### 81. Refactor User Slice
