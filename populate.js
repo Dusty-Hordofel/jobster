@@ -3,6 +3,8 @@ const mockData = require("./mock-data.json");
 const Job = require("./models/Job");
 const connectDB = require("./db/connect");
 
+console.log(process.env.MONGO_URI);
+
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);

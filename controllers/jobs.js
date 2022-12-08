@@ -5,11 +5,24 @@ const mongoose = require("mongoose");
 
 const getAllJobs = async (req, res, next) => {
   // console.log(req.user.userId);//from Auth Middleware
+  // console.log(req.query);
+  const { search, status, jobType, sort } = req.query;
+
+  // protected route
+  const queryObject = {
+    createdBy: req.user.userId,
+  };
+
+  if (search) {
+    queryObject.position = { $regex: search, $options: "i" };
+  }
 
   //get all job associated to the userId
-  const jobs = await Job.find({ createdBy: req.user.userId }).sort("createdAt");
+  // const jobs = await Job.find({ createdBy: req.user.userId }).sort("createdAt");
 
-  res.status(StatusCodes.OK).json({ jobs, count: jobs.length });
+  let result = Job.find(queryObject);
+  const jobs = await result;
+  res.status(StatusCodes.OK).json({ jobs });
 };
 
 const getAllUserJobs = async (req, res, next) => {
