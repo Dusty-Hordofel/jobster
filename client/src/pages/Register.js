@@ -112,7 +112,7 @@ const Register = () => {
           handleChange={handleChange}
         />
         <button type="submit" className="btn btn-block" disabled={isLoading}>
-          submit
+          {isLoading ? "loading..." : "submit"}
         </button>
         {/* right after submit btn */}
         {/* toggle btn */}
