@@ -1454,6 +1454,38 @@ export default Navbar;
 
 ### 66. Toggle Sidebar
 
+userSlice.js
+
+```js
+const initialState = {
+  isLoading: false,
+  isSidebarOpen: false,
+  user: getUserFromLocalStorage(),
+};
+
+reducers: {
+    toggleSidebar: (state) => {
+      state.isSidebarOpen = !state.isSidebarOpen;
+    },
+  },
+
+export const { toggleSidebar } = userSlice.actions;
+```
+
+Navbar.js
+
+```js
+import { toggleSidebar } from "../features/user/userSlice";
+
+const toggle = () => {
+  dispatch(toggleSidebar());
+};
+
+<button type="button" className="toggle-btn" onClick={toggle}>
+  <FaAlignLeft />
+</button>;
+```
+
 ### 67. Toggle Logout Dropdown
 
 ### 68. Logout Functionality

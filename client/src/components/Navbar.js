@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { toggleSidebar } from "../features/user/userSlice";
 
 const Wrapper = styled.nav`
   height: var(--nav-height);
@@ -91,14 +92,14 @@ const Navbar = () => {
   const { user } = useSelector((store) => store.user); //retrieve user from the store
   const dispatch = useDispatch();
 
+  const toggle = () => {
+    dispatch(toggleSidebar());
+  };
+
   return (
     <Wrapper>
       <div className="nav-center">
-        <button
-          type="button"
-          className="toggle-btn"
-          onClick={() => console.log("toggle sidebar")}
-        >
+        <button type="button" className="toggle-btn" onClick={toggle}>
           <FaAlignLeft />
         </button>
         <div>
