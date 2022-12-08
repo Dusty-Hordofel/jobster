@@ -899,6 +899,75 @@ const getAllJobs = async (req, res) => {
 
 ### 54. Check For Test User in Auth Middleware
 
+- Make Test User Read-Only
+  middleware/authentication.js
+
+```js
+const payload = jwt.verify(token, process.env.JWT_SECRET);
+const testUser = payload.userId === "638eacb06e5d329442841e8c";
+req.user = { userId: payload.userId, testUser };
+```
+
+create testingUser in middleware
+middleware/testUser
+
+```js
+const { BadRequestError } = require("../errors");
+
+const testUser = (req, res, next) => {
+  if (req.user.testUser) {
+    throw new BadRequestError("Test User. Read Only!");
+  }
+  next();
+};
+
+module.exports = testUser;
+```
+
+- add to auth routes (updateUser)
+
+```js
+const express = require("express");
+const router = express.Router();
+const authenticateUser = require("../middleware/authentication");
+const testUser = require("../middleware/testUser");
+const { register, login, updateUser } = require("../controllers/auth");
+
+router.post("/register", register);
+router.post("/login", login);
+router.patch("/updateUser", authenticateUser, testUser, updateUser);
+
+module.exports = router;
+```
+
+- add to job routes (createJob, updateJob, deleteJob)
+  routes/jobs.js
+
+```js
+const express = require("express");
+
+const router = express.Router();
+const {
+  createJob,
+  deleteJob,
+  getAllJobs,
+  updateJob,
+  getJob,
+  showStats,
+} = require("../controllers/jobs");
+const testUser = require("../middleware/testUser");
+
+router.route("/").post(testUser, createJob).get(getAllJobs);
+router.route("/stats").get(showStats);
+router
+  .route("/:id")
+  .get(getJob)
+  .delete(testUser, deleteJob)
+  .patch(testUser, updateJob);
+
+module.exports = router;
+```
+
 ### 55. Restrict CRUD to Test User
 
 ### 56. API Limiter
