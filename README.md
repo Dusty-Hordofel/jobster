@@ -314,27 +314,6 @@ axios.patch(url, ressource, options);
 axios.delete(url, options);
 ```
 
-<!-- ### 17. Axios CustomFetch Instance
-
-- utils/axios.js
-
-```js
-import axios from "axios";
-const customFetch = axios.create({ baseURL: "http://" });
-
-export default customFetch;
-``` -->
-
-<!-- ### 19. Testing Register - HTTP(AJAX) Request
-
-### 20. Register User - HTTP(AJAX) Request
-
-### 21. Login User - HTTP(AJAX) Request
-
-### 22. Local Storage
-
-### 23. Programmatically Navigate To Dashboard -->
-
 # PARTIE II. Mosala API
 
 ## Section 5. Mosala API
@@ -1014,8 +993,11 @@ app.use(express.static(path.resolve(__dirname, "./client/build")));
 ### 59. Setup Status Aggregation Pipeline
 
 <<<<<<< Updated upstream
+
 ### 60. Refactor Status Data
+
 =======
+
 - install [moment](https://www.npmjs.com/package/moment)
 
 controllers/jobs
@@ -1079,19 +1061,131 @@ const showStats = async (req, res) => {
 ### 60. Deployment to Render
 
 # PARTIE III. Back to Mosala FRONTEND PART
->>>>>>> Stashed changes
 
-### 61. Setup Monthly Applications Aggregation Pipeline
+### 61. Axios CustomFetch Instance
 
-### 62. Refactor Monthly Applications Data
+- utils/axios.js
 
-### 63. Deployment
+```js
+import axios from "axios";
+const customFetch = axios.create({ baseURL: "http://" });
 
-### 64.
+export default customFetch;
+```
 
-### 65.
+- userSlice.js
 
-### 66.
+```js
+import customFetch from "../../utils/axios";
+
+export const registerUser = createAsyncThunk(
+  "user/registerUser",
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.post("/auth/testingRegister", user);
+      console.log(resp);
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+);
+```
+
+### 62. Testing Register - HTTP(AJAX) Request
+
+### 63. Register User - HTTP(AJAX) Request
+
+userSlice.js
+
+```js
+export const registerUser = createAsyncThunk(
+  'user/registerUser',
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.post('/auth/register', user);
+      return resp.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+)
+   extraReducers: {
+    [registerUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [registerUser.fulfilled]: (state, { payload }) => {
+      const { user } = payload;
+      state.isLoading = false;
+      state.user = user;
+      toast.success(`Hello There ${user.name}`);
+    },
+    [registerUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    }
+  }
+```
+
+Extra Reducers "Builder Callback" Notation
+
+```js
+extraReducers: (builder) => {
+    builder
+      .addCase(registerUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(registerUser.fulfilled, (state, { payload }) => {
+        const { user } = payload;
+        state.isLoading = false;
+        state.user = user;
+        addUserToLocalStorage(user);
+        toast.success(`Hello There ${user.name}`);
+      })
+      .addCase(registerUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
+        const { user } = payload;
+        state.isLoading = false;
+        state.user = user;
+        addUserToLocalStorage(user);
+
+        toast.success(`Welcome Back ${user.name}`);
+      })
+      .addCase(loginUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        const { user } = payload;
+        state.isLoading = false;
+        state.user = user;
+        addUserToLocalStorage(user);
+
+        toast.success(`User Updated!`);
+      })
+      .addCase(updateUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(clearStore.rejected, () => {
+        toast.error('There was an error..');
+      });
+  },
+```
+
+### 64. Login User - HTTP(AJAX) Request
+
+### 65. Local Storage
+
+### 66. Programmatically Navigate To Dashboard
 
 ### 67.
 
