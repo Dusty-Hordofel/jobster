@@ -800,7 +800,8 @@ UserSchema.pre("save", async function () {
 
 ### 48. Populate Database
 
-populate.js
+- create populate.js
+  populate.js
 
 ```js
 require("dotenv").config();
@@ -826,6 +827,44 @@ const start = async () => {
 start();
 ```
 
-### 49.
+### 49. Search Functionality - Intro
 
-### 50.
+### 50. Search Input
+
+### 51. Status and JobType
+
+### 52. Sort
+
+### 53. Pagination
+
+### 54. Check For Test User in Auth Middleware
+
+### 55. Restrict CRUD to Test User
+
+### 56. API Limiter
+
+### 57. Stats Intro
+
+### 58. ShowStats Controller
+
+### 59. Setup Status Aggregation Pipeline
+
+### 60. Refactor Status Data
+
+### 61. Setup Monthly Applications Aggregation Pipeline
+
+### 62. Refactor Monthly Applications Data
+
+### 63. Deployment
+
+### 64.
+
+### 65.
+
+### 66.
+
+### 67.
+
+### 68.
+
+### 69.
