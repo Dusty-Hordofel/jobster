@@ -26,5 +26,3 @@ const NavLinks = ({ toggleSidebar }) => {
 };
 
 export default NavLinks;
-
-export default NavLinks;
