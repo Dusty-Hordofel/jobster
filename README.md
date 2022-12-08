@@ -1391,25 +1391,23 @@ const SharedLayout = () => {
 export default SharedLayout;
 ```
 
-### 65. Complete SharedLayout
+### 65. Sidebar CSS Logic
 
-### 66. Sidebar CSS Logic
+### 66. React Icons
 
-### 67. React Icons
+### 67. Navbar Structure
 
-### 68. Navbar Structure
+### 68. Toggle Sidebar
 
-### 69. Toggle Sidebar
+### 69. Toggle Logout Dropdown
 
-### 70. Toggle Logout Dropdown
+### 70. Logout Functionality
 
-### 71. Logout Functionality
+### 71. Protected Route
 
-### 72. Protected Route
+### 72. Small Sidebar - Setup
 
-### 73. Small Sidebar - Setup
-
-### 74. Small Sidebar - Toggle
+### 73. Small Sidebar - Toggle
 
 ### 74. Links Data
 
