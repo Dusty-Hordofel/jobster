@@ -870,15 +870,9 @@ const getAllJobs = async (req, res) => {
 };
 ```
 
-### 50. Search Input
+### 50. Search Input, Status and JobType, Sort, Pagination
 
-### 51. Status and JobType
-
-### 52. Sort
-
-### 53. Pagination
-
-### 54. Check For Test User in Auth Middleware
+### 51. Check For Test User in Auth Middleware
 
 - Make Test User Read-Only
   middleware/authentication.js
@@ -951,7 +945,7 @@ router
 module.exports = router;
 ```
 
-### 56. API Limiter
+### 52. API Limiter
 
 routes/auth.js
 
@@ -986,9 +980,9 @@ app.set("trust proxy", 1);
 app.use(express.static(path.resolve(__dirname, "./client/build")));
 ```
 
-### 57. Stats Intro
+### 53. Stats Intro
 
-### 58. ShowStats Controller
+### 54. ShowStats Controller
 
 Setup Stats Route
 controllers/jobs
@@ -1032,15 +1026,9 @@ router.route("/:id").get(getJob).delete(deleteJob).patch(updateJob);
 module.exports = router;
 ```
 
-### 59. Setup Status Aggregation Pipeline
+### 55. Setup Status Aggregation Pipeline
 
 - install [moment](https://www.npmjs.com/package/moment)
-
-### 61. Setup Monthly Applications Aggregation Pipeline
-
-### 62. Refactor Monthly Applications Data
-
-### 63. Deployment
 
 const mongoose = require('mongoose');
 const moment = require('moment');
@@ -1098,11 +1086,13 @@ const showStats = async (req, res) => {
 };
 ```
 
-### 60. Deployment to Render
+### 56. Deployment to Render
 
 # PARTIE III. Back to Mosala FRONTEND PART
 
-### 61. Axios CustomFetch Instance
+# Section 10. Axios
+
+### 57. Axios CustomFetch Instance
 
 - utils/axios.js
 
@@ -1113,7 +1103,7 @@ const customFetch = axios.create({ baseURL: "http://..." });
 export default customFetch;
 ```
 
-### 62. Testing Register - HTTP(AJAX) Request
+### 58. Testing Register - HTTP(AJAX) Request
 
 - install [axios](https://www.npmjs.com/package/axios)
 
@@ -1135,7 +1125,7 @@ export const registerUser = createAsyncThunk(
 );
 ```
 
-### 63. Register User - HTTP(AJAX) Request
+### 59. Register User - HTTP(AJAX) Request
 
 userSlice.js
 
@@ -1223,7 +1213,7 @@ extraReducers: (builder) => {
   },
 ```
 
-### 64. Login User - HTTP(AJAX) Request
+### 60. Login User - HTTP(AJAX) Request
 
 userSlice.js
 
@@ -1259,7 +1249,7 @@ export const loginUser = createAsyncThunk(
 
 ```
 
-### 65. Local Storage
+### 61. Local Storage
 
 utils/localStorage.js
 
@@ -1306,7 +1296,7 @@ const initialState = {
 
 ```
 
-### 66. Programmatically Navigate To Dashboard
+### 62. Programmatically Navigate To Dashboard
 
 Register.js
 
@@ -1326,10 +1316,42 @@ const Register = () => {
 };
 ```
 
-Section x: Dashboard Setup
+# Section 11: Dashboard Setup
 
-### 67.
+### 63. Setup Dashboard Pages
 
-### 68.
+### 64. Complete SharedLayout
 
-### 69.
+### 65. Complete SharedLayout
+
+### 66. Sidebar CSS Logic
+
+### 67. React Icons
+
+### 68. Navbar Structure
+
+### 69. Toggle Sidebar
+
+### 70. Toggle Logout Dropdown
+
+### 71. Logout Functionality
+
+### 72. Protected Route
+
+### 73. Small Sidebar - Setup
+
+### 74. Small Sidebar - Toggle
+
+### 74. Links Data
+
+### 75. Small Sidebar - Nav Links
+
+### 76. Small Sidebar - Nav Links
+
+### 77. Big Sidebar
+
+### 78.
+
+### 79.
+
+### 80.
