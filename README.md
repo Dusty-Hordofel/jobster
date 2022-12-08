@@ -1579,7 +1579,58 @@ App.js
 
 ### 70. Small Sidebar - Setup
 
+SmallSidebar.js;
+
+```js
+import Wrapper from "../assets/wrappers/SmallSidebar";
+import { FaTimes } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+import Logo from "./Logo";
+import { useSelector, useDispatch } from "react-redux";
+
+export const SmallSidebar = () => {
+  return (
+    <Wrapper>
+      <div className="sidebar-container show-sidebar">
+        <div className="content">
+          <button className="close-btn" onClick={() => console.log("toggle")}>
+            <FaTimes />
+          </button>
+          <header>
+            <Logo />
+          </header>
+          <div className="nav-links">nav links</div>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
+export default SmallSidebar;
+```
+
 ### 71. Small Sidebar - Toggle
+
+SmallSidebar.js;
+
+```js
+import { toggleSidebar } from '../features/user/userSlice';
+
+
+const { isSidebarOpen } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  const toggle = () => {
+    dispatch(toggleSidebar());
+  };
+
+return (
+  <div className={isSidebarOpen ? 'sidebar-container show-sidebar' : 'sidebar-container'}>
+    <div className='content'>
+        <button type='button' className='close-btn' onClick={toggle}>
+          <FaTimes />
+        </button>
+
+);
+```
 
 ### 74. Links Data
 
