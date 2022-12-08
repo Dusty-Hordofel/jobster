@@ -908,6 +908,8 @@ const testUser = payload.userId === "638eacb06e5d329442841e8c";
 req.user = { userId: payload.userId, testUser };
 ```
 
+### 55. Restrict CRUD to Test User
+
 create testingUser in middleware
 middleware/testUser
 
@@ -967,8 +969,6 @@ router
 
 module.exports = router;
 ```
-
-### 55. Restrict CRUD to Test User
 
 ### 56. API Limiter
 
