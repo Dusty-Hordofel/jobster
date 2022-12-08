@@ -990,15 +990,57 @@ app.use(express.static(path.resolve(__dirname, "./client/build")));
 
 ### 58. ShowStats Controller
 
+Setup Stats Route
+controllers/jobs
+
+```js
+const showStats = (req, res) => {
+  res
+    .status(StatusCodes.OK)
+    .json({ defaultStats: {}, monthlyApplications: [] });
+};
+
+module.exports = {
+  createJob,
+  deleteJob,
+  getAllJobs,
+  updateJob,
+  getJob,
+  showStats,
+};
+```
+
+routes/jobs.js
+
+```js
+const express = require("express");
+
+const router = express.Router();
+const {
+  createJob,
+  deleteJob,
+  getAllJobs,
+  updateJob,
+  getJob,
+  showStats,
+} = require("../controllers/jobs");
+
+router.route("/").post(createJob).get(getAllJobs);
+router.route("/stats").get(showStats);
+router.route("/:id").get(getJob).delete(deleteJob).patch(updateJob);
+
+module.exports = router;
+```
+
 ### 59. Setup Status Aggregation Pipeline
-
-### 60. Refactor Status Data
-
-=======
 
 - install [moment](https://www.npmjs.com/package/moment)
 
-controllers/jobs
+### 61. Setup Monthly Applications Aggregation Pipeline
+
+### 62. Refactor Monthly Applications Data
+
+### 63. Deployment
 
 const mongoose = require('mongoose');
 const moment = require('moment');
