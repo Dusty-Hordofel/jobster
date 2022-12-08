@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { toggleSidebar } from "../features/user/userSlice";
+import { toggleSidebar, logoutUser } from "../features/user/userSlice";
 
 const Wrapper = styled.nav`
   height: var(--nav-height);
@@ -122,7 +122,7 @@ const Navbar = () => {
               type="button"
               className="dropdown-btn"
               onClick={() => {
-                console.log("logout user");
+                dispatch(logoutUser());
               }}
             >
               logout
