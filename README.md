@@ -1,3 +1,5 @@
+# PARTIE I. Mosala FRONTEND PART
+
 ## Section 1. Folder structure
 
 ### 1. create client and server folders
@@ -311,27 +313,6 @@ axios.patch(url, ressource, options);
 //DELETE
 axios.delete(url, options);
 ```
-
-<!-- ### 17. Axios CustomFetch Instance
-
-- utils/axios.js
-
-```js
-import axios from "axios";
-const customFetch = axios.create({ baseURL: "http://" });
-
-export default customFetch;
-``` -->
-
-<!-- ### 19. Testing Register - HTTP(AJAX) Request
-
-### 20. Register User - HTTP(AJAX) Request
-
-### 21. Login User - HTTP(AJAX) Request
-
-### 22. Local Storage
-
-### 23. Programmatically Navigate To Dashboard -->
 
 # PARTIE II. Mosala API
 
@@ -1055,7 +1036,11 @@ module.exports = router;
 
 - install [moment](https://www.npmjs.com/package/moment)
 
-controllers/jobs
+### 61. Setup Monthly Applications Aggregation Pipeline
+
+### 62. Refactor Monthly Applications Data
+
+### 63. Deployment
 
 const mongoose = require('mongoose');
 const moment = require('moment');
@@ -1113,19 +1098,235 @@ const showStats = async (req, res) => {
 };
 ```
 
-### 60. Deployment
+### 60. Deployment to Render
 
-### 61.
+# PARTIE III. Back to Mosala FRONTEND PART
 
-### 62.
+### 61. Axios CustomFetch Instance
 
-### 63.
+- utils/axios.js
 
-### 64.
+```js
+import axios from "axios";
+const customFetch = axios.create({ baseURL: "http://..." });
 
-### 65.
+export default customFetch;
+```
 
-### 66.
+### 62. Testing Register - HTTP(AJAX) Request
+
+- install [axios](https://www.npmjs.com/package/axios)
+
+- userSlice.js
+
+```js
+import customFetch from "../../utils/axios";
+
+export const registerUser = createAsyncThunk(
+  "user/registerUser",
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.post("/auth/testingRegister", user);
+      console.log(resp);
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+);
+```
+
+### 63. Register User - HTTP(AJAX) Request
+
+userSlice.js
+
+```js
+export const registerUser = createAsyncThunk(
+  'user/registerUser',
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.post('/auth/register', user);
+      return resp.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+)
+   extraReducers: {
+    [registerUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [registerUser.fulfilled]: (state, { payload }) => {
+      const { user } = payload;
+      state.isLoading = false;
+      state.user = user;
+      toast.success(`Hello There ${user.name}`);
+    },
+    [registerUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    }
+  }
+```
+
+Extra Reducers "Builder Callback" Notation
+
+```js
+extraReducers: (builder) => {
+    builder
+      .addCase(registerUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(registerUser.fulfilled, (state, { payload }) => {
+        const { user } = payload;
+        state.isLoading = false;
+        state.user = user;
+        addUserToLocalStorage(user);
+        toast.success(`Hello There ${user.name}`);
+      })
+      .addCase(registerUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
+        const { user } = payload;
+        state.isLoading = false;
+        state.user = user;
+        addUserToLocalStorage(user);
+
+        toast.success(`Welcome Back ${user.name}`);
+      })
+      .addCase(loginUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        const { user } = payload;
+        state.isLoading = false;
+        state.user = user;
+        addUserToLocalStorage(user);
+
+        toast.success(`User Updated!`);
+      })
+      .addCase(updateUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(clearStore.rejected, () => {
+        toast.error('There was an error..');
+      });
+  },
+```
+
+### 64. Login User - HTTP(AJAX) Request
+
+userSlice.js
+
+```js
+export const loginUser = createAsyncThunk(
+  'user/loginUser',
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.post('/auth/login', user);
+      return resp.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+
+   extraReducers: {
+    [loginUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [loginUser.fulfilled]: (state, { payload }) => {
+      const { user } = payload;
+      state.isLoading = false;
+      state.user = user;
+      toast.success(`Welcome Back ${user.name}`);
+    },
+    [loginUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    }
+  }
+
+);
+
+```
+
+### 65. Local Storage
+
+utils/localStorage.js
+
+```js
+export const addUserToLocalStorage = (user) => {
+  localStorage.setItem("user", JSON.stringify(user));
+};
+
+export const removeUserFromLocalStorage = () => {
+  localStorage.removeItem("user");
+};
+
+export const getUserFromLocalStorage = () => {
+  const result = localStorage.getItem("user");
+  const user = result ? JSON.parse(result) : null;
+  return user;
+};
+```
+
+invoke getUserFromLocalStorage when app loads (set it equal to user)
+
+```js
+const initialState = {
+  isLoading: false,
+  user: getUserFromLocalStorage(),
+};
+
+
+[registerUser.fulfilled]: (state, { payload }) => {
+      const { user } = payload;
+      state.isLoading = false;
+      state.user = user;
+      addUserToLocalStorage(user);
+      toast.success(`Hello There ${user.name}`);
+    },
+
+[loginUser.fulfilled]: (state, { payload }) => {
+      const { user } = payload;
+      state.isLoading = false;
+      state.user = user;
+      addUserToLocalStorage(user);
+      toast.success(`Welcome Back ${user.name}`);
+    },
+
+```
+
+### 66. Programmatically Navigate To Dashboard
+
+Register.js
+
+```js
+import { useNavigate } from "react-router-dom";
+
+const Register = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  }, [user, navigate]);
+};
+```
+
+Section x: Dashboard Setup
 
 ### 67.
 
