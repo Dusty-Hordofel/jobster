@@ -1488,6 +1488,25 @@ const toggle = () => {
 
 ### 67. Toggle Logout Dropdown
 
+Navbar.js
+
+```js
+const [showLogout, setShowLogout] = useState(false)
+
+<div className='btn-container'>
+  <button className='btn' onClick={() => setShowLogout(!showLogout)}>
+    <FaUserCircle />
+      {user.name}
+    <FaCaretDown />
+  </button>
+  <div className={showLogout ? 'dropdown show-dropdown' : 'dropdown'}>
+    <button onClick={() => console.log('logout user')} className='dropdown-btn'>
+      logout
+    </button>
+  </div>
+</div>
+```
+
 ### 68. Logout Functionality
 
 ### 69. Protected Route
