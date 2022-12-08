@@ -1,3 +1,5 @@
+# PARTIE I. Mosala FRONTEND PART
+
 ## Section 1. Folder structure
 
 ### 1. create client and server folders
@@ -1011,7 +1013,73 @@ app.use(express.static(path.resolve(__dirname, "./client/build")));
 
 ### 59. Setup Status Aggregation Pipeline
 
+<<<<<<< Updated upstream
 ### 60. Refactor Status Data
+=======
+- install [moment](https://www.npmjs.com/package/moment)
+
+controllers/jobs
+
+const mongoose = require('mongoose');
+const moment = require('moment');
+
+controllers/jobs
+
+```js
+const showStats = async (req, res) => {
+  let stats = await Job.aggregate([
+    { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
+    { $group: { _id: "$status", count: { $sum: 1 } } },
+  ]);
+
+  //Refactor Status Data
+  stats = stats.reduce((acc, curr) => {
+    const { _id: title, count } = curr;
+    acc[title] = count;
+    return acc;
+  }, {});
+
+  const defaultStats = {
+    pending: stats.pending || 0,
+    interview: stats.interview || 0,
+    declined: stats.declined || 0,
+  };
+
+  //Setup Monthly Applications Aggregation Pipeline
+  let monthlyApplications = await Job.aggregate([
+    { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
+    {
+      $group: {
+        _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { "_id.year": -1, "_id.month": -1 } },
+    { $limit: 6 },
+  ]);
+  //Refactor Monthly Applications Data
+  monthlyApplications = monthlyApplications
+    .map((item) => {
+      const {
+        _id: { year, month },
+        count,
+      } = item;
+      const date = moment()
+        .month(month - 1)
+        .year(year)
+        .format("MMM Y");
+      return { date, count };
+    })
+    .reverse();
+
+  res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications });
+};
+```
+
+### 60. Deployment to Render
+
+# PARTIE III. Back to Mosala FRONTEND PART
+>>>>>>> Stashed changes
 
 ### 61. Setup Monthly Applications Aggregation Pipeline
 
