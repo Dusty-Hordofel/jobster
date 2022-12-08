@@ -17,6 +17,15 @@ const getAllJobs = async (req, res, next) => {
     queryObject.position = { $regex: search, $options: "i" };
   }
 
+  // add stuff based on condition
+
+  if (status && status !== "all") {
+    queryObject.status = status;
+  }
+  if (jobType && jobType !== "all") {
+    queryObject.jobType = jobType;
+  }
+
   //get all job associated to the userId
   // const jobs = await Job.find({ createdBy: req.user.userId }).sort("createdAt");
 
