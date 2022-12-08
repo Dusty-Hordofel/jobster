@@ -1068,10 +1068,14 @@ const showStats = async (req, res) => {
 
 ```js
 import axios from "axios";
-const customFetch = axios.create({ baseURL: "http://" });
+const customFetch = axios.create({ baseURL: "http://..." });
 
 export default customFetch;
 ```
+
+### 62. Testing Register - HTTP(AJAX) Request
+
+- install [axios](https://www.npmjs.com/package/axios)
 
 - userSlice.js
 
@@ -1090,8 +1094,6 @@ export const registerUser = createAsyncThunk(
   }
 );
 ```
-
-### 62. Testing Register - HTTP(AJAX) Request
 
 ### 63. Register User - HTTP(AJAX) Request
 
