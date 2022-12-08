@@ -4,7 +4,7 @@
 
 ### 2. update client base folders
 
-## Section 2. Jobster Landing
+## Section 2. Mosala Landing
 
 ### 3 Landing Page
 
@@ -333,14 +333,14 @@ export default customFetch;
 
 ### 23. Programmatically Navigate To Dashboard -->
 
-# PARTIE II. Jobster API
+# PARTIE II. Mosala API
 
-## Section 5. Jobster API
+## Section 5. Mosala API
 
 ### 17. Backend Folder structure
 
 - create server folder
-- add stater folder for Jobster API
+- add stater folder for Mosala API
 - install dependencies
 
 ```bash
@@ -373,7 +373,7 @@ npm start
 
 ### 20. Database Connection
 
-- connect our app to jobster database
+- connect our app to Mosala database
 
 ### 21. User Schema
 
@@ -690,7 +690,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
 module.exports = errorHandlerMiddleware;
 ```
 
-## section 9. security documentation
+## section 9. security and documentation
 
 ### 39. Security Info and Packages
 
@@ -741,19 +741,292 @@ $ npm i helmet cors xss-clean express-rate-limit dotenv
 
 ### 45. Add Swagger UI
 
-- add [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) and [yamljs](https://www.npmjs.com/package/yamljs) to our application
-- create a swagger.yamljs file and paste `Swagger UI ` content
+- create a swagger.yaml file and paste `Swagger UI ` content
+- add [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) and [yamljs](https://www.npmjs.com/package/yamljs) to our application (app.js)
+- test our API documentation
 
-### 46.
+# PARTIE II. Update Mosala API
 
-### 47.
+## section 9.
 
-### 48.
+### 46. Update User - Setup
 
-### 49.
+- add `updateUser` controller in `Auth.js`
 
-### 50.
+```js
+const updateUser = async (req, res) => {
+  const { email, name, lastName, location } = req.body;
+  if (!email || !name || !lastName || !location) {
+    throw new BadRequest("Please provide all values");
+  }
+  const user = await User.findOne({ _id: req.user.userId });
 
+  user.email = email;
+  user.name = name;
+  user.lastName = lastName;
+  user.location = location;
+
+  await user.save();
+  const token = user.createJWT();
+  res.status(StatusCodes.OK).json({
+    user: {
+      email: user.email,
+      lastName: user.lastName,
+      location: user.location,
+      name: user.name,
+      token,
+    },
+  });
+};
 ```
 
+### 47. Password "Gotcha"
+
+- this.modifiedPaths();
+
+```js
+UserSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
 ```
+
+### 47. Fake Data - Mockaroo
+
+- use [Mockaroo](https://mockaroo.com/) random generator to add fake data
+- create mock-data.json (root)
+- provide test user id
+
+### 48. Populate Database
+
+- create populate.js
+  populate.js
+
+```js
+require("dotenv").config();
+
+const mockData = require("./mock-data.json");
+
+const Job = require("./models/Job");
+const connectDB = require("./db/connect");
+
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI);
+
+    await Job.create(mockData);
+    console.log("Success!!!");
+    process.exit(0);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
+
+start();
+```
+
+### 49. Search Functionality - Intro
+
+controllers/jobs.js
+
+```js
+const getAllJobs = async (req, res) => {
+  const { search, status, jobType, sort } = req.query;
+
+  // protected route
+  const queryObject = {
+    createdBy: req.user.userId,
+  };
+
+  if (search) {
+    queryObject.position = { $regex: search, $options: "i" };
+  }
+  // add stuff based on condition
+
+  if (status && status !== "all") {
+    queryObject.status = status;
+  }
+  if (jobType && jobType !== "all") {
+    queryObject.jobType = jobType;
+  }
+
+  // NO AWAIT
+
+  let result = Job.find(queryObject);
+
+  // chain sort conditions
+
+  if (sort === "latest") {
+    result = result.sort("-createdAt");
+  }
+  if (sort === "oldest") {
+    result = result.sort("createdAt");
+  }
+  if (sort === "a-z") {
+    result = result.sort("position");
+  }
+  if (sort === "z-a") {
+    result = result.sort("-position");
+  }
+
+  //
+
+  // setup pagination
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  result = result.skip(skip).limit(limit);
+
+  const jobs = await result;
+
+  const totalJobs = await Job.countDocuments(queryObject);
+  const numOfPages = Math.ceil(totalJobs / limit);
+
+  res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages });
+};
+```
+
+### 50. Search Input
+
+### 51. Status and JobType
+
+### 52. Sort
+
+### 53. Pagination
+
+### 54. Check For Test User in Auth Middleware
+
+- Make Test User Read-Only
+  middleware/authentication.js
+
+```js
+const payload = jwt.verify(token, process.env.JWT_SECRET);
+const testUser = payload.userId === "638eacb06e5d329442841e8c";
+req.user = { userId: payload.userId, testUser };
+```
+
+### 55. Restrict CRUD to Test User
+
+create testingUser in middleware
+middleware/testUser
+
+```js
+const { BadRequestError } = require("../errors");
+
+const testUser = (req, res, next) => {
+  if (req.user.testUser) {
+    throw new BadRequestError("Test User. Read Only!");
+  }
+  next();
+};
+
+module.exports = testUser;
+```
+
+- add to auth routes (updateUser)
+
+```js
+const express = require("express");
+const router = express.Router();
+const authenticateUser = require("../middleware/authentication");
+const testUser = require("../middleware/testUser");
+const { register, login, updateUser } = require("../controllers/auth");
+
+router.post("/register", register);
+router.post("/login", login);
+router.patch("/updateUser", authenticateUser, testUser, updateUser);
+
+module.exports = router;
+```
+
+- add to job routes (createJob, updateJob, deleteJob)
+  routes/jobs.js
+
+```js
+const express = require("express");
+
+const router = express.Router();
+const {
+  createJob,
+  deleteJob,
+  getAllJobs,
+  updateJob,
+  getJob,
+  showStats,
+} = require("../controllers/jobs");
+const testUser = require("../middleware/testUser");
+
+router.route("/").post(testUser, createJob).get(getAllJobs);
+router.route("/stats").get(showStats);
+router
+  .route("/:id")
+  .get(getJob)
+  .delete(testUser, deleteJob)
+  .patch(testUser, updateJob);
+
+module.exports = router;
+```
+
+### 56. API Limiter
+
+routes/auth.js
+
+```js
+const express = require("express");
+const router = express.Router();
+const authenticateUser = require("../middleware/authentication");
+const testUser = require("../middleware/testUser");
+const { register, login, updateUser } = require("../controllers/auth");
+
+const rateLimiter = require("express-rate-limit");
+const apiLimiter = rateLimiter({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10,
+  message: {
+    msg: "Too many requests from this IP, please try again after 15 minutes",
+  },
+});
+
+router.post("/register", apiLimiter, register);
+router.post("/login", apiLimiter, login);
+router.patch("/updateUser", authenticateUser, testUser, updateUser);
+
+module.exports = router;
+```
+
+app.js
+
+```js
+app.set("trust proxy", 1);
+
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+```
+
+### 57. Stats Intro
+
+### 58. ShowStats Controller
+
+### 59. Setup Status Aggregation Pipeline
+
+### 60. Refactor Status Data
+
+### 61. Setup Monthly Applications Aggregation Pipeline
+
+### 62. Refactor Monthly Applications Data
+
+### 63. Deployment
+
+### 64.
+
+### 65.
+
+### 66.
+
+### 67.
+
+### 68.
+
+### 69.
