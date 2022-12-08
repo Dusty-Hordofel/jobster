@@ -1674,7 +1674,35 @@ export default links;
 
 ### 73. Small Sidebar - Nav Links
 
-### 74. Small Sidebar - Nav Links
+SmallSidebar.js
+
+```js
+import { NavLink } from "react-router-dom";
+
+return (
+  <div className="nav-links">
+    {links.map((link) => {
+      const { text, path, id, icon } = link;
+
+      return (
+        <NavLink
+          to={path}
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+          key={id}
+          onClick={toggle}
+        >
+          <span className="icon">{icon}</span>
+          {text}
+        </NavLink>
+      );
+    })}
+  </div>
+);
+```
+
+### 74. NavLinks Component
 
 ### 75. Big Sidebar
 
