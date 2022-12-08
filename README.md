@@ -870,15 +870,9 @@ const getAllJobs = async (req, res) => {
 };
 ```
 
-### 50. Search Input
+### 50. Search Input, Status and JobType, Sort, Pagination
 
-### 51. Status and JobType
-
-### 52. Sort
-
-### 53. Pagination
-
-### 54. Check For Test User in Auth Middleware
+### 51. Check For Test User in Auth Middleware
 
 - Make Test User Read-Only
   middleware/authentication.js
@@ -951,7 +945,7 @@ router
 module.exports = router;
 ```
 
-### 56. API Limiter
+### 52. API Limiter
 
 routes/auth.js
 
@@ -986,9 +980,9 @@ app.set("trust proxy", 1);
 app.use(express.static(path.resolve(__dirname, "./client/build")));
 ```
 
-### 57. Stats Intro
+### 53. Stats Intro
 
-### 58. ShowStats Controller
+### 54. ShowStats Controller
 
 Setup Stats Route
 controllers/jobs
@@ -1032,15 +1026,9 @@ router.route("/:id").get(getJob).delete(deleteJob).patch(updateJob);
 module.exports = router;
 ```
 
-### 59. Setup Status Aggregation Pipeline
+### 55. Setup Status Aggregation Pipeline
 
 - install [moment](https://www.npmjs.com/package/moment)
-
-### 61. Setup Monthly Applications Aggregation Pipeline
-
-### 62. Refactor Monthly Applications Data
-
-### 63. Deployment
 
 const mongoose = require('mongoose');
 const moment = require('moment');
@@ -1098,11 +1086,13 @@ const showStats = async (req, res) => {
 };
 ```
 
-### 60. Deployment to Render
+### 56. Deployment to Render
 
 # PARTIE III. Back to Mosala FRONTEND PART
 
-### 61. Axios CustomFetch Instance
+# Section 10. Axios
+
+### 57. Axios CustomFetch Instance
 
 - utils/axios.js
 
@@ -1113,7 +1103,7 @@ const customFetch = axios.create({ baseURL: "http://..." });
 export default customFetch;
 ```
 
-### 62. Testing Register - HTTP(AJAX) Request
+### 58. Testing Register - HTTP(AJAX) Request
 
 - install [axios](https://www.npmjs.com/package/axios)
 
@@ -1135,7 +1125,7 @@ export const registerUser = createAsyncThunk(
 );
 ```
 
-### 63. Register User - HTTP(AJAX) Request
+### 59. Register User - HTTP(AJAX) Request
 
 userSlice.js
 
@@ -1223,7 +1213,7 @@ extraReducers: (builder) => {
   },
 ```
 
-### 64. Login User - HTTP(AJAX) Request
+### 60. Login User - HTTP(AJAX) Request
 
 userSlice.js
 
@@ -1259,7 +1249,7 @@ export const loginUser = createAsyncThunk(
 
 ```
 
-### 65. Local Storage
+### 61. Local Storage
 
 utils/localStorage.js
 
@@ -1306,7 +1296,7 @@ const initialState = {
 
 ```
 
-### 66. Programmatically Navigate To Dashboard
+### 62. Programmatically Navigate To Dashboard
 
 Register.js
 
@@ -1326,10 +1316,472 @@ const Register = () => {
 };
 ```
 
-Section x: Dashboard Setup
+# Section 11: Dashboard Setup
 
-### 67.
+### 63. Setup Dashboard Pages
 
-### 68.
+- remove Dashboard.js
+- create Dashboard Folder
+- create Stats, Profile, AddJob, AllJobs, SharedLayout,
+- create index.js and setup import/export
 
-### 69.
+App.js
+
+```js
+import {
+  AllJobs,
+  Profile,
+  SharedLayout,
+  Stats,
+  AddJob,
+} from "./pages/dashboard";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route index element={<Stats />} />
+          <Route path="all-jobs" element={<AllJobs />} />
+          <Route path="add-job" element={<AddJob />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
+        <Route path="register" element={<Register />} />
+        <Route path="landing" element={<Landing />} />
+        <Route path="*" element={<Error />} />
+      </Routes>
+      <ToastContainer position="top-center" />
+    </BrowserRouter>
+  );
+}
+```
+
+### 64. Complete SharedLayout
+
+- create Navbar, SmallSidebar, BigSidebar in components
+- import Wrappers from assets/wrappers
+- simple return
+- import/export
+- SharedLayout.js;
+- [react icons]()
+
+```js
+import { Outlet } from "react-router-dom";
+import { Navbar, SmallSidebar, BigSidebar } from "../../components";
+import Wrapper from "../../assets/wrappers/SharedLayout";
+
+const SharedLayout = () => {
+  return (
+    <>
+      <Wrapper>
+        <main className="dashboard">
+          <SmallSidebar />
+          <BigSidebar />
+          <div>
+            <Navbar />
+            <div className="dashboard-page">
+              <Outlet />
+            </div>
+          </div>
+        </main>
+      </Wrapper>
+    </>
+  );
+};
+
+export default SharedLayout;
+```
+
+### 65. Navbar Structure
+
+Navbar.js;
+
+```js
+import Wrapper from "../assets/wrappers/Navbar";
+import { FaAlignLeft, FaUserCircle, FaCaretDown } from "react-icons/fa";
+import Logo from "./Logo";
+import { useState } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+
+const Navbar = () => {
+  const { user } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+
+  return (
+    <Wrapper>
+      <div className="nav-center">
+        <button
+          type="button"
+          className="toggle-btn"
+          onClick={() => console.log("toggle sidebar")}
+        >
+          <FaAlignLeft />
+        </button>
+        <div>
+          <Logo />
+          <h3 className="logo-text">dashboard</h3>
+        </div>
+        <div className="btn-container">
+          <button
+            type="button"
+            className="btn"
+            onClick={() => console.log("toggle logout dropdown")}
+          >
+            <FaUserCircle />
+            {user?.name}
+            <FaCaretDown />
+          </button>
+          <div className="dropdown show-dropdown">
+            <button
+              type="button"
+              className="dropdown-btn"
+              onClick={() => {
+                console.log("logout user");
+              }}
+            >
+              logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
+
+export default Navbar;
+```
+
+### 66. Toggle Sidebar
+
+userSlice.js
+
+```js
+const initialState = {
+  isLoading: false,
+  isSidebarOpen: false,
+  user: getUserFromLocalStorage(),
+};
+
+reducers: {
+    toggleSidebar: (state) => {
+      state.isSidebarOpen = !state.isSidebarOpen;
+    },
+  },
+
+export const { toggleSidebar } = userSlice.actions;
+```
+
+Navbar.js
+
+```js
+import { toggleSidebar } from "../features/user/userSlice";
+
+const toggle = () => {
+  dispatch(toggleSidebar());
+};
+
+<button type="button" className="toggle-btn" onClick={toggle}>
+  <FaAlignLeft />
+</button>;
+```
+
+### 67. Toggle Logout Dropdown
+
+Navbar.js
+
+```js
+const [showLogout, setShowLogout] = useState(false)
+
+<div className='btn-container'>
+  <button className='btn' onClick={() => setShowLogout(!showLogout)}>
+    <FaUserCircle />
+      {user.name}
+    <FaCaretDown />
+  </button>
+  <div className={showLogout ? 'dropdown show-dropdown' : 'dropdown'}>
+    <button onClick={() => console.log('logout user')} className='dropdown-btn'>
+      logout
+    </button>
+  </div>
+</div>
+```
+
+### 68. Logout Functionality
+
+userSlice.js
+
+```js
+reducers: {
+logoutUser: (state) => {
+state.user = null;
+state.isSidebarOpen = false;
+removeUserFromLocalStorage();
+},
+toggleSidebar: (state) => {
+state.isSidebarOpen = !state.isSidebarOpen;
+},
+},
+
+export const { logoutUser, toggleSidebar } = userSlice.actions;
+```
+
+Navbar.js
+
+```js
+import { toggleSidebar, logoutUser } from "../features/user/userSlice";
+
+<div className={showLogout ? "dropdown show-dropdown" : "dropdown"}>
+  <button
+    type="button"
+    className="dropdown-btn"
+    onClick={() => {
+      dispatch(logoutUser());
+    }}
+  >
+    logout
+  </button>
+</div>;
+```
+
+### 69. Protected Route
+
+pages/ProtectedRoute.js
+
+```js
+import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+const ProtectedRoute = ({ children }) => {
+  const { user } = useSelector((store) => store.user);
+  if (!user) {
+    return <Navigate to="/landing" />;
+  }
+  return children;
+};
+
+export default ProtectedRoute;
+```
+
+App.js
+
+```js
+<Route
+  path="/"
+  element={
+    <ProtectedRoute>
+      <SharedLayout />
+    </ProtectedRoute>
+  }
+>
+  ...
+</Route>
+```
+
+### 70. Small Sidebar - Setup
+
+SmallSidebar.js;
+
+```js
+import Wrapper from "../assets/wrappers/SmallSidebar";
+import { FaTimes } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+import Logo from "./Logo";
+import { useSelector, useDispatch } from "react-redux";
+
+export const SmallSidebar = () => {
+  return (
+    <Wrapper>
+      <div className="sidebar-container show-sidebar">
+        <div className="content">
+          <button className="close-btn" onClick={() => console.log("toggle")}>
+            <FaTimes />
+          </button>
+          <header>
+            <Logo />
+          </header>
+          <div className="nav-links">nav links</div>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
+export default SmallSidebar;
+```
+
+### 71. Small Sidebar - Toggle
+
+SmallSidebar.js;
+
+```js
+import { toggleSidebar } from '../features/user/userSlice';
+
+
+const { isSidebarOpen } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  const toggle = () => {
+    dispatch(toggleSidebar());
+  };
+
+return (
+  <div className={isSidebarOpen ? 'sidebar-container show-sidebar' : 'sidebar-container'}>
+    <div className='content'>
+        <button type='button' className='close-btn' onClick={toggle}>
+          <FaTimes />
+        </button>
+
+);
+```
+
+### 72. Links Data
+
+create utils/links.js
+
+```js
+import { IoBarChartSharp } from "react-icons/io5";
+import { MdQueryStats } from "react-icons/md";
+import { FaWpforms } from "react-icons/fa";
+import { ImProfile } from "react-icons/im";
+
+const links = [
+  {
+    id: 1,
+    text: "stats",
+    path: "/",
+    icon: <IoBarChartSharp />,
+  },
+  {
+    id: 2,
+    text: "all jobs",
+    path: "all-jobs",
+    icon: <MdQueryStats />,
+  },
+  {
+    id: 3,
+    text: "add job",
+    path: "add-job",
+    icon: <FaWpforms />,
+  },
+  {
+    id: 4,
+    text: "profile",
+    path: "profile",
+    icon: <ImProfile />,
+  },
+];
+
+export default links;
+```
+
+### 73. Small Sidebar - Nav Links
+
+SmallSidebar.js
+
+```js
+import { NavLink } from "react-router-dom";
+
+return (
+  <div className="nav-links">
+    {links.map((link) => {
+      const { text, path, id, icon } = link;
+
+      return (
+        <NavLink
+          to={path}
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+          key={id}
+          onClick={toggle}
+        >
+          <span className="icon">{icon}</span>
+          {text}
+        </NavLink>
+      );
+    })}
+  </div>
+);
+```
+
+### 74. NavLinks Component
+
+```js
+import { NavLink } from "react-router-dom";
+import links from "../utils/links";
+
+const NavLinks = ({ toggleSidebar }) => {
+  return (
+    <div className="nav-links">
+      {links.map((link) => {
+        const { text, path, id, icon } = link;
+
+        return (
+          <NavLink
+            to={path}
+            key={id}
+            onClick={toggleSidebar}
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            <span className="icon">{icon}</span>
+            {text}
+          </NavLink>
+        );
+      })}
+    </div>
+  );
+};
+
+export default NavLinks;
+```
+
+SmallSidebar.js
+
+```js
+import NavLinks from './NavLinks'
+
+return <NavLinks toggleSidebar={toggleSidebar}>
+```
+
+### 75. Big Sidebar
+
+```js
+import NavLinks from "./NavLinks";
+import Logo from "../components/Logo";
+import Wrapper from "../assets/wrappers/BigSidebar";
+import { useSelector } from "react-redux";
+
+const BigSidebar = () => {
+  const { isSidebarOpen } = useSelector((store) => store.user);
+  return (
+    <Wrapper>
+      <div
+        className={
+          isSidebarOpen
+            ? "sidebar-container "
+            : "sidebar-container show-sidebar"
+        }
+      >
+        <div className="content">
+          <header>
+            <Logo />
+          </header>
+          <NavLinks />
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
+
+export default BigSidebar;
+```
+
+### 76.
+
+### 77.
+
+### 78.
+
+### 79.
+
+### 80.
