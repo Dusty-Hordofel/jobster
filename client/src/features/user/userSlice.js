@@ -49,12 +49,18 @@ export const updateUser = createAsyncThunk(
     try {
       const resp = await customFetch.patch("/auth/updateUser", user, {
         headers: {
-          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+          // authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+          authorization: `Bearer `,
         },
       });
+
       return resp.data;
     } catch (error) {
-      console.log(error.response);
+      // console.log(error.response);
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser());
+        return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
+      }
       return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
@@ -70,6 +76,7 @@ const userSlice = createSlice({
     logoutUser: (state) => {
       state.user = null;
       state.isSidebarOpen = false;
+      toast.success("Logout Successful!");
       removeUserFromLocalStorage();
     },
   },

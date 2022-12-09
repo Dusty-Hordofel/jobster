@@ -1858,7 +1858,7 @@ const handleChange = (e) =>{
 export default Profile;
 ```
 
-### 77. Update User - Complete
+### 77. Update User
 
 - Update USER
 - PATCH /auth/updateUser
@@ -1920,8 +1920,42 @@ const handleSubmit = (e) => {
 };
 ```
 
-### 78.
+### 78. Authentication Error
 
-### 79. Authentication Error
+userSlice.js
+
+```js
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.patch('/auth/updateUser', user, {
+        headers: {
+          // authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+          authorization: `Bearer `,
+        },
+      });
+
+      return resp.data;
+    } catch (error) {
+      // console.log(error.response);
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser());
+        return thunkAPI.rejectWithValue('Unauthorized! Logging Out...');
+      }
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
+// logoutUser
+logoutUser: (state) => {
+      state.user = null;
+      state.isSidebarOpen = false;
+      toast.success('Logout Successful!');
+      removeUserFromLocalStorage();
+    },
+
+```
 
 ### 80. Refactor User Slice
