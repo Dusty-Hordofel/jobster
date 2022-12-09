@@ -1,4 +1,4 @@
-import { FormRow } from "../../components";
+import { FormRow, FormRowSelect } from "../../components";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import styled from "styled-components";
@@ -125,8 +125,21 @@ const AddJob = () => {
             handleChange={handleJobInput}
           />
           {/* job status */}
+          <FormRowSelect
+            name="status"
+            value={status}
+            handleChange={handleJobInput}
+            list={statusOptions}
+          />
 
           {/* job type */}
+          <FormRowSelect
+            name="jobType"
+            labelText="job type"
+            value={jobType}
+            handleChange={handleJobInput}
+            list={jobTypeOptions}
+          />
 
           {/* btn container */}
           <div className="btn-container">
