@@ -2033,3 +2033,89 @@ export const updateUser = createAsyncThunk(
   }
 );
 ```
+
+# Section 13: Job Page
+
+### 80. Job Slice
+
+features/job/jobSlice.js
+
+```js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
+import customFetch from "../../utils/axios";
+import { getUserFromLocalStorage } from "../../utils/localStorage";
+
+const initialState = {
+  isLoading: false,
+  position: "",
+  company: "",
+  jobLocation: "",
+  jobTypeOptions: ["full-time", "part-time", "remote", "internship"],
+  jobType: "full-time",
+  statusOptions: ["interview", "declined", "pending"],
+  status: "pending",
+  isEditing: false,
+  editJobId: "",
+};
+
+const jobSlice = createSlice({
+  name: "job",
+  initialState,
+});
+
+export default jobSlice.reducer;
+```
+
+store.js
+
+```js
+import jobSlice from "./features/job/jobSlice";
+
+export const store = configureStore({
+  reducer: {
+    user: userSlice,
+    job: jobSlice,
+  },
+});
+```
+
+### 81. Structure
+
+### 82. FormRow Select
+
+### 83. HandleChange Reducer
+
+### 84. ClearValues Reducer
+
+### 85. Create Job Request - Overview
+
+### 86. Create Job Request - Complete
+
+### 87. User Location
+
+### 88. Logout Message
+
+### 89.
+
+### 90.
+
+### 91.
+
+### 92.
+
+### 93.
+
+### 94.
+
+### 95.
+
+### 96.
+
+### 97.
+
+### 98.
+
+### 99.
+
+### 100.
