@@ -1776,12 +1776,260 @@ const BigSidebar = () => {
 export default BigSidebar;
 ```
 
-### 76.
+# Section 12: Profile
 
-### 77.
+### 76. Profile Page - Setup
 
-### 78.
+Profile.js
 
-### 79.
+```js
+import { useState } from 'react';
+import { FormRow } from '../../components';
+import Wrapper from '../../assets/wrappers/DashboardFormPage';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-### 80.
+
+const Profile = () => {
+  const { isLoading, user } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+
+const [userData,setUserData] = useState({
+  name:user?.name ||''
+  email:user?.email ||''
+  lastName:user?.lastName ||''
+  location:user?.location ||''
+})
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+        const { name, email, lastName, location } = userData;
+
+    if (!name || !email || !lastName || !location) {
+      toast.error('Please Fill Out All Fields');
+      return;
+    }
+  };
+const handleChange = (e) =>{
+  const name = e.target.name
+  const value = e.target.value
+  setUserData({...userData,[name]:value})
+}
+  return (
+    <Wrapper>
+      <form className='form' onSubmit={handleSubmit}>
+        <h3>profile</h3>
+
+        <div className='form-center'>
+          <FormRow
+            type='text'
+            name='name'
+            value={userData.name}
+            handleChange={handleChange}
+          />
+          <FormRow
+            type='text'
+            labelText='last name'
+            name='lastName'
+            value={userData.lastName}
+            handleChange={handleChange}
+          />
+          <FormRow
+            type='email'
+            name='email'
+            value={userData.email}
+            handleChange={handleChange}
+          />
+          <FormRow
+            type='text'
+            name='location'
+            value={userData.location}
+            handleChange={handleChange}
+          />
+          <button className='btn btn-block' type='submit' disabled={isLoading}>
+            {isLoading ? 'Please Wait...' : 'save changes'}
+          </button>
+        </div>
+      </form>
+    </Wrapper>
+  );
+};
+
+export default Profile;
+```
+
+### 77. Update User
+
+- Update USER
+- PATCH /auth/updateUser
+- { email:'john@gmail.com', name:'john', lastName:'smith', location:'my location' }
+- authorization header : 'Bearer token'
+- sends back the user object with token
+- userSlice.js
+
+```js
+export const updateUser = createAsyncThunk(
+'user/updateUser',
+async (user, thunkAPI) => {
+try {
+const resp = await customFetch.patch('/auth/updateUser', user, {
+headers: {
+authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+},
+});
+return resp.data;
+} catch (error) {
+console.log(error.response);
+return thunkAPI.rejectWithValue(error.response.data.msg);
+}
+}
+);
+// extra reducers
+[updateUser.pending]: (state) => {
+state.isLoading = true;
+},
+[updateUser.fulfilled]: (state, { payload }) => {
+const { user } = payload;
+state.isLoading = false;
+state.user = user;
+
+      addUserToLocalStorage(user);
+      toast.success('User Updated');
+    },
+    [updateUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
+
+```
+
+Profile.js
+
+```js
+import { updateUser } from "../../features/user/userSlice";
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const { name, email, lastName, location } = userData;
+
+  if (!name || !email || !lastName || !location) {
+    toast.error("Please Fill Out All Fields");
+    return;
+  }
+  dispatch(updateUser({ name, email, lastName, location }));
+};
+```
+
+### 78. Authentication Error
+
+userSlice.js
+
+```js
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.patch('/auth/updateUser', user, {
+        headers: {
+          // authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+          authorization: `Bearer `,
+        },
+      });
+
+      return resp.data;
+    } catch (error) {
+      // console.log(error.response);
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser());
+        return thunkAPI.rejectWithValue('Unauthorized! Logging Out...');
+      }
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
+// logoutUser
+logoutUser: (state) => {
+      state.user = null;
+      state.isSidebarOpen = false;
+      toast.success('Logout Successful!');
+      removeUserFromLocalStorage();
+    },
+
+```
+
+### 79. Refactor User Slice
+
+features/user/userThunk.js
+
+```js
+import customFetch from "../../utils/axios";
+
+import { logoutUser } from "./userSlice";
+
+export const registerUserThunk = async (url, user, thunkAPI) => {
+  try {
+    const resp = await customFetch.post(url, user);
+    return resp.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+
+export const loginUserThunk = async (url, user, thunkAPI) => {
+  try {
+    const resp = await customFetch.post(url, user);
+    return resp.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+
+export const updateUserThunk = async (url, user, thunkAPI) => {
+  try {
+    const resp = await customFetch.patch(url, user, {
+      headers: {
+        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    // console.log(error.response);
+    if (error.response.status === 401) {
+      thunkAPI.dispatch(logoutUser());
+      return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
+    }
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+```
+
+userSlice.js
+
+```js
+import {
+  loginUserThunk,
+  registerUserThunk,
+  updateUserThunk,
+} from "./userThunk";
+
+export const registerUser = createAsyncThunk(
+  "user/registerUser",
+  async (user, thunkAPI) => {
+    return registerUserThunk("/auth/register", user, thunkAPI);
+  }
+);
+
+export const loginUser = createAsyncThunk(
+  "user/loginUser",
+  async (user, thunkAPI) => {
+    return loginUserThunk("/auth/login", user, thunkAPI);
+  }
+);
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async (user, thunkAPI) => {
+    return updateUserThunk("/auth/updateUser", user, thunkAPI);
+  }
+);
+```

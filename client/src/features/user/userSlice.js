@@ -6,6 +6,11 @@ import {
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
 } from "../../utils/localStorage";
+import {
+  loginUserThunk,
+  registerUserThunk,
+  updateUserThunk,
+} from "./userThunk";
 
 const initialState = {
   isLoading: false,
@@ -15,6 +20,13 @@ const initialState = {
 //initial state
 
 // communicate with our backend
+export const registerUser = createAsyncThunk(
+  "user/registerUser",
+  async (user, thunkAPI) => {
+    return registerUserThunk("/auth/register", user, thunkAPI);
+  }
+);
+/*
 export const registerUser = createAsyncThunk(
   "user/registerUser",
   async (user, thunkAPI) => {
@@ -28,9 +40,17 @@ export const registerUser = createAsyncThunk(
 
     // console.log(`Register User: ${JSON.stringify(user)}`);
   }
-);
+);*/
 
 // communicate with our backend
+
+export const loginUser = createAsyncThunk(
+  "user/loginUser",
+  async (user, thunkAPI) => {
+    return loginUserThunk("/auth/login", user, thunkAPI);
+  }
+);
+/*
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (user, thunkAPI) => {
@@ -41,7 +61,38 @@ export const loginUser = createAsyncThunk(
       return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
+);*/
+
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async (user, thunkAPI) => {
+    return updateUserThunk("/auth/updateUser", user, thunkAPI);
+  }
 );
+
+/*
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.patch("/auth/updateUser", user, {
+        headers: {
+          // authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+          authorization: `Bearer `,
+        },
+      });
+
+      return resp.data;
+    } catch (error) {
+      // console.log(error.response);
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser());
+        return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
+      }
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);*/
 
 const userSlice = createSlice({
   name: "user",
@@ -53,6 +104,7 @@ const userSlice = createSlice({
     logoutUser: (state) => {
       state.user = null;
       state.isSidebarOpen = false;
+      toast.success("Logout Successful!");
       removeUserFromLocalStorage();
     },
   },
@@ -82,6 +134,21 @@ const userSlice = createSlice({
       toast.success(`Welcome Back ${user.name}`);
     },
     [loginUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
+    [updateUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [updateUser.fulfilled]: (state, { payload }) => {
+      const { user } = payload;
+      state.isLoading = false;
+      state.user = user;
+
+      addUserToLocalStorage(user);
+      toast.success("User Updated");
+    },
+    [updateUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload);
     },
