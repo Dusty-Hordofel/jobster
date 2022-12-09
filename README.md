@@ -1958,4 +1958,78 @@ logoutUser: (state) => {
 
 ```
 
-### 80. Refactor User Slice
+### 79. Refactor User Slice
+
+features/user/userThunk.js
+
+```js
+import customFetch from "../../utils/axios";
+
+import { logoutUser } from "./userSlice";
+
+export const registerUserThunk = async (url, user, thunkAPI) => {
+  try {
+    const resp = await customFetch.post(url, user);
+    return resp.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+
+export const loginUserThunk = async (url, user, thunkAPI) => {
+  try {
+    const resp = await customFetch.post(url, user);
+    return resp.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+
+export const updateUserThunk = async (url, user, thunkAPI) => {
+  try {
+    const resp = await customFetch.patch(url, user, {
+      headers: {
+        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    // console.log(error.response);
+    if (error.response.status === 401) {
+      thunkAPI.dispatch(logoutUser());
+      return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
+    }
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+```
+
+userSlice.js
+
+```js
+import {
+  loginUserThunk,
+  registerUserThunk,
+  updateUserThunk,
+} from "./userThunk";
+
+export const registerUser = createAsyncThunk(
+  "user/registerUser",
+  async (user, thunkAPI) => {
+    return registerUserThunk("/auth/register", user, thunkAPI);
+  }
+);
+
+export const loginUser = createAsyncThunk(
+  "user/loginUser",
+  async (user, thunkAPI) => {
+    return loginUserThunk("/auth/login", user, thunkAPI);
+  }
+);
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async (user, thunkAPI) => {
+    return updateUserThunk("/auth/updateUser", user, thunkAPI);
+  }
+);
+```
