@@ -2258,6 +2258,29 @@ AddJob.js
 
 ### 83. HandleChange Reducer
 
+jobSlice.js
+
+```js
+    // reducers
+    handleChange: (state, { payload: { name, value } }) => {
+      state[name] = value;
+    },
+
+export const { handleChange } = jobSlice.actions;
+```
+
+AddJob.js
+
+```js
+import { handleChange } from "../../features/job/jobSlice";
+
+const handleJobInput = (e) => {
+  const name = e.target.name;
+  const value = e.target.value;
+  dispatch(handleChange({ name, value }));
+};
+```
+
 ### 84. ClearValues Reducer
 
 ### 85. Create Job Request - Overview
