@@ -2283,6 +2283,35 @@ const handleJobInput = (e) => {
 
 ### 84. ClearValues Reducer
 
+```js
+    // reducers
+    clearValues: () => {
+      return {
+        ...initialState
+      };
+      return initialState
+    },
+
+export const { handleChange, clearValues } = jobSlice.actions;
+
+```
+
+AddJob.js
+
+```js
+import { clearValues, handleChange } from "../../features/job/jobSlice";
+
+return (
+  <button
+    type="button"
+    className="btn btn-block clear-btn"
+    onClick={() => dispatch(clearValues())}
+  >
+    clear
+  </button>
+);
+```
+
 ### 85. Create Job Request - Overview
 
 ### 86. Create Job Request - Complete
