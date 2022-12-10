@@ -2312,13 +2312,81 @@ return (
 );
 ```
 
-### 85. Create Job Request - Overview
+### 85. Create Job Request
 
-### 86. Create Job Request - Complete
+- POST /jobs
+- { position:'position', company:'company', jobLocation:'location', jobType:'full-time', status:'pending' }
+- authorization header : 'Bearer token'
+- sends back the job object
 
-### 87. User Location
+```js
+export const createJob = createAsyncThunk(
+'job/createJob',
+async (job, thunkAPI) => {
+try {
+const resp = await customFetch.post('/jobs', job, {
+headers: {
+authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+},
+});
+thunkAPI.dispatch(clearValues());
+return resp.data;
+} catch (error) {
+// basic setup
+return thunkAPI.rejectWithValue(error.response.data.msg);
+// logout user
+if (error.response.status === 401) {
+thunkAPI.dispatch(logoutUser());
+return thunkAPI.rejectWithValue('Unauthorized! Logging Out...');
+}
+return thunkAPI.rejectWithValue(error.response.data.msg);
+}
+}
+);
 
-### 88. Logout Message
+// extra reducers
+
+extraReducers: {
+[createJob.pending]: (state) => {
+state.isLoading = true;
+},
+[createJob.fulfilled]: (state, action) => {
+state.isLoading = false;
+toast.success('Job Created');
+},
+[createJob.rejected]: (state, { payload }) => {
+state.isLoading = false;
+toast.error(payload);
+},
+}
+```
+
+AddJob.js
+
+```js
+import {
+  clearValues,
+  handleChange,
+  createJob,
+} from "../../features/job/jobSlice";
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  if (!position || !company || !jobLocation) {
+    toast.error("Please Fill Out All Fields");
+    return;
+  }
+
+  dispatch(createJob({ position, company, jobLocation, jobType, status }));
+};
+```
+
+### 86. User Location
+
+### 87. Logout Message
+
+### 88.
 
 ### 89.
 
