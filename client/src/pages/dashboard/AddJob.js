@@ -7,6 +7,7 @@ import {
 } from "../../features/job/jobSlice";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import { useEffect } from "react";
 
 const Wrapper = styled.section`
   border-radius: var(--borderRadius);
@@ -86,6 +87,9 @@ const AddJob = () => {
     isEditing,
     editJobId,
   } = useSelector((store) => store.job);
+
+  const { user } = useSelector((store) => store.user);
+
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
@@ -105,6 +109,12 @@ const AddJob = () => {
     dispatch(handleChange({ name, value }));
   };
 
+  useEffect(() => {
+    // eventually will check for isEditing
+    if (!isEditing) {
+      dispatch(handleChange({ name: "jobLocation", value: user.location }));
+    }
+  }, []);
   return (
     <Wrapper>
       <form className="form">

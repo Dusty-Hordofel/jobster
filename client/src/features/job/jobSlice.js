@@ -48,11 +48,12 @@ const jobSlice = createSlice({
     handleChange: (state, { payload: { name, value } }) => {
       state[name] = value;
     },
+
     clearValues: () => {
       return {
         ...initialState,
+        jobLocation: getUserFromLocalStorage()?.location || "",
       };
-      // return initialState;
     },
   },
 
