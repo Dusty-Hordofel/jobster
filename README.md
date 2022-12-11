@@ -2581,15 +2581,69 @@ if (isLoading) {
 }
 ```
 
-### 91.
+### 91. GetAllJobs Request
 
-### 92.
+- GET /jobs
+- authorization header : 'Bearer token'
+- returns {jobs:[],totalJobs:number, numOfPages:number }
 
-### 93.
+allJobsSlice.js
 
-### 94.
+```js
+export const getAllJobs = createAsyncThunk(
+  'allJobs/getJobs',
+  async (_, thunkAPI) => {
+    let url = `/jobs`;
 
-### 95.
+    try {
+      const resp = await customFetch.get(url, {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+
+      return resp.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
+
+// extra reducers
+
+extraReducers: {
+[getAllJobs.pending]: (state) => {
+state.isLoading = true;
+},
+[getAllJobs.fulfilled]: (state, { payload }) => {
+state.isLoading = false;
+state.jobs = payload.jobs;
+},
+[getAllJobs.rejected]: (state, { payload }) => {
+state.isLoading = false;
+toast.error(payload);
+},
+}
+```
+
+JobsContainer.js
+
+```js
+import { getAllJobs } from "../features/allJobs/allJobsSlice";
+
+useEffect(() => {
+  dispatch(getAllJobs());
+}, []);
+```
+
+### 92. Job Component Structure
+
+### 93. Job Info Component
+
+### 94. Moment.js
+
+### 95. Toggle Loading
 
 ### 96.
 

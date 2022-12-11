@@ -2,11 +2,16 @@ import { useEffect } from "react";
 import Job from "./Job";
 import Wrapper from "../assets/wrappers/JobsContainer";
 import { useSelector, useDispatch } from "react-redux";
+import { getAllJobs } from "../features/allJobs/allJobsSlice";
 import Loading from "./Loading";
 
 const JobsContainer = () => {
   const { jobs, isLoading } = useSelector((store) => store.allJobs);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllJobs());
+  }, []);
 
   if (isLoading) {
     return <Loading center />;
