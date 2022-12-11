@@ -2493,7 +2493,7 @@ export const store = configureStore({
 });
 ```
 
-### 89.
+### 89. AllJobs Page Structure
 
 - create
 - components/SearchContainer.js
@@ -2518,7 +2518,68 @@ const AllJobs = () => {
 export default AllJobs;
 ```
 
-### 90.
+### 90. Container Setup
+
+```js
+import { useEffect } from "react";
+import Job from "./Job";
+import Wrapper from "../assets/wrappers/JobsContainer";
+import { useSelector, useDispatch } from "react-redux";
+
+const JobsContainer = () => {
+  const { jobs, isLoading } = useSelector((store) => store.allJobs);
+  const dispatch = useDispatch();
+
+  if (isLoading) {
+    return (
+      <Wrapper>
+        <h2>Loading...</h2>
+      </Wrapper>
+    );
+  }
+
+  if (jobs.length === 0) {
+    return (
+      <Wrapper>
+        <h2>No jobs to display...</h2>
+      </Wrapper>
+    );
+  }
+
+  return (
+    <Wrapper>
+      <h5>jobs info</h5>
+      <div className="jobs">
+        {jobs.map((job) => {
+          return <Job key={job._id} {...job} />;
+        })}
+      </div>
+    </Wrapper>
+  );
+};
+
+export default JobsContainer;
+```
+
+Loading.js
+
+```js
+const Loading = ({ center }) => {
+  return <div className={center ? "loading loading-center" : "loading"}></div>;
+};
+
+export default Loading;
+```
+
+JobsContainer.js
+
+```js
+import Loading from "./Loading";
+
+if (isLoading) {
+  return <Loading center />;
+}
+```
 
 ### 91.
 
