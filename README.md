@@ -2495,6 +2495,29 @@ export const store = configureStore({
 
 ### 89.
 
+- create
+- components/SearchContainer.js
+- components/JobsContainer.js
+- components/Job.js
+- import/export
+
+AllJobs.js
+
+```js
+import { JobsContainer, SearchContainer } from "../../components";
+
+const AllJobs = () => {
+  return (
+    <>
+      <SearchContainer />
+      <JobsContainer />
+    </>
+  );
+};
+
+export default AllJobs;
+```
+
 ### 90.
 
 ### 91.
