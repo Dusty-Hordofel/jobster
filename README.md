@@ -2931,7 +2931,9 @@ if (isEditing) {
 
 # section 16: Refactor Application
 
-### 99. Job Thunkfeatures/job/jobThunk.js
+### 99. Job Thunk
+
+- features/job/jobThunk.js
 
 ```js
 import customFetch from "../../utils/axios";
@@ -2996,6 +2998,30 @@ export const editJob = createAsyncThunk("job/editJob", editJobThunk);
 ```
 
 ### 100. Authorization Header - File Approach
+
+jobThunk.js
+
+```js
+const authHeader = (thunkAPI) => {
+  return {
+    headers: {
+      authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+    },
+  };
+};
+```
+
+```js
+export const createJobThunk = async (job, thunkAPI) => {
+  try {
+    const resp = await customFetch.post("/jobs", job, authHeader(thunkAPI));
+    thunkAPI.dispatch(clearValues());
+    return resp.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+```
 
 ### 101. Authorization Header - Utils Approach
 
