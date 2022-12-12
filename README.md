@@ -3099,17 +3099,251 @@ Register.js
 </button>
 ```
 
-### 104.
+# section 17: Stats Pages
 
-### 105.
+### 104. ShowStats Request
 
-### 106.
+- GET /jobs/stats
 
-### 107.
+- authorization header : 'Bearer token'
 
-### 108.
+- returns { defaultStats:{pending:24,interview:27,declined:24}, monthlyApplications:[{date:"Nov 2021",count:5},{date:"Dec 2021",count:4} ] }
 
-### 109.
+- last six months
+
+allJobsSlice.js
+
+```js
+export const showStats = createAsyncThunk(
+  'allJobs/showStats',
+  async (_, thunkAPI) => {
+    try {
+      const resp = await customFetch.get('/jobs/stats');
+      console.log(resp.data);
+      return resp.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
+// extraReducers
+
+    [showStats.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [showStats.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.stats = payload.defaultStats;
+      state.monthlyApplications = payload.monthlyApplications;
+    },
+    [showStats.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
+
+```
+
+### 105. Stats Page Structure
+
+create
+components/StatsContainer.js
+components/ChartsContainer.js
+import/export
+Stats.js
+
+```js
+import { useEffect } from "react";
+import { StatsContainer, Loading, ChartsContainer } from "../../components";
+import { useDispatch, useSelector } from "react-redux";
+import { showStats } from "../../features/allJobs/allJobsSlice";
+const Stats = () => {
+  const { isLoading, monthlyApplications } = useSelector(
+    (store) => store.allJobs
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(showStats());
+    // eslint-disable-next-line
+  }, []);
+  if (isLoading) {
+    return <Loading center />;
+  }
+  return (
+    <>
+      <StatsContainer />
+      {monthlyApplications.length > 0 && <ChartsContainer />}
+    </>
+  );
+};
+
+export default Stats;
+```
+
+### 106. Stats Container
+
+- create components/StatItem.js
+  StatsContainer.js
+
+```js
+import StatItem from "./StatItem";
+import { FaSuitcaseRolling, FaCalendarCheck, FaBug } from "react-icons/fa";
+import Wrapper from "../assets/wrappers/StatsContainer";
+import { useSelector } from "react-redux";
+const StatsContainer = () => {
+  const { stats } = useSelector((store) => store.allJobs);
+  const defaultStats = [
+    {
+      title: "pending applications",
+      count: stats.pending || 0,
+      icon: <FaSuitcaseRolling />,
+      color: "#e9b949",
+      bcg: "#fcefc7",
+    },
+    {
+      title: "interviews scheduled",
+      count: stats.interview || 0,
+      icon: <FaCalendarCheck />,
+      color: "#647acb",
+      bcg: "#e0e8f9",
+    },
+    {
+      title: "jobs declined",
+      count: stats.declined || 0,
+      icon: <FaBug />,
+      color: "#d66a6a",
+      bcg: "#ffeeee",
+    },
+  ];
+
+  return (
+    <Wrapper>
+      {defaultStats.map((item, index) => {
+        return <StatItem key={index} {...item} />;
+      })}
+    </Wrapper>
+  );
+};
+
+export default StatsContainer;
+```
+
+### 107. Stat Item
+
+StatItem.js
+
+```js
+import Wrapper from "../assets/wrappers/StatItem";
+
+const StatItem = ({ count, title, icon, color, bcg }) => {
+  return (
+    <Wrapper color={color} bcg={bcg}>
+      <header>
+        <span className="count">{count}</span>
+        <span className="icon">{icon}</span>
+      </header>
+      <h5 className="title">{title}</h5>
+    </Wrapper>
+  );
+};
+
+export default StatItem;
+```
+
+### 108. Charts Container
+
+- create
+- components/AreaChart.js
+- components/BarChart.js
+- ChartsContainer.js
+
+```js
+import React, { useState } from "react";
+
+import BarChart from "./BarChart";
+import AreaChart from "./AreaChart";
+import Wrapper from "../assets/wrappers/ChartsContainer";
+import { useSelector } from "react-redux";
+const ChartsContainer = () => {
+  const [barChart, setBarChart] = useState(true);
+  const { monthlyApplications: data } = useSelector((store) => store.allJobs);
+  return (
+    <Wrapper>
+      <h4>Monthly Applications</h4>
+      <button type="button" onClick={() => setBarChart(!barChart)}>
+        {barChart ? "Area Chart" : "Bar Chart"}
+      </button>
+      {barChart ? <BarChart data={data} /> : <AreaChart data={data} />}
+    </Wrapper>
+  );
+};
+
+export default ChartsContainer;
+```
+
+### 109. Charts Complete
+
+- install [Recharts](https://recharts.org/en-US/guide)
+
+AreaChart.js
+
+```js
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
+
+const AreaChartComponent = ({ data }) => {
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <AreaChart data={data} margin={{ top: 50 }}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" />
+        <YAxis allowDecimals={false} />
+        <Tooltip />
+        <Area type="monotone" dataKey="count" stroke="#1e3a8a" fill="#3b82f6" />
+      </AreaChart>
+    </ResponsiveContainer>
+  );
+};
+
+export default AreaChartComponent;
+```
+
+BarChart.js
+
+```js
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+const BarChartComponent = ({ data }) => {
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={data} margin={{ top: 50 }}>
+        <CartesianGrid strokeDasharray="3 3 " />
+        <XAxis dataKey="date" />
+        <YAxis allowDecimals={false} />
+        <Tooltip />
+        <Bar dataKey="count" fill="#3b82f6" barSize={75} />
+      </BarChart>
+    </ResponsiveContainer>
+  );
+};
+
+export default BarChartComponent;
+```
 
 ### 110.
 
@@ -3160,3 +3394,11 @@ Register.js
 ### 133.
 
 ### 134.
+
+```
+
+```
+
+```
+
+```
