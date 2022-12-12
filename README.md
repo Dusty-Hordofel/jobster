@@ -2775,10 +2775,10 @@ export const {
   jobSlice.js
 
 ```js
-import { showLoading, hideLoading, getAllJobs } from '../allJobs/allJobsSlice';
+import { showLoading, hideLoading, getAllJobs } from "../allJobs/allJobsSlice";
 
 export const deleteJob = createAsyncThunk(
-  'job/deleteJob',
+  "job/deleteJob",
   async (jobId, thunkAPI) => {
     thunkAPI.dispatch(showLoading());
     try {
@@ -2794,7 +2794,7 @@ export const deleteJob = createAsyncThunk(
       return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
-);*
+);
 ```
 
 Job.js
@@ -2929,6 +2929,76 @@ if (isEditing) {
 }
 ```
 
-### 99.
+# section 16: Refactor Application
 
-### 100.
+### 99. Job Thunk
+
+### 100. Authorization Header - File Approach
+
+### 101. Authorization Header - Utils Approach
+
+### 102. Authorization Header - Axios Interceptors Approach
+
+### 103. Test User
+
+### 104.
+
+### 105.
+
+### 106.
+
+### 107.
+
+### 108.
+
+### 109.
+
+### 110.
+
+### 111.
+
+### 112.
+
+### 113.
+
+### 114.
+
+### 115.
+
+### 116.
+
+### 117.
+
+### 118.
+
+### 119.
+
+### 120.
+
+### 121.
+
+### 122.
+
+### 123.
+
+### 124.
+
+### 125.
+
+### 126.
+
+### 127.
+
+### 128.
+
+### 129.
+
+### 130.
+
+### 131.
+
+### 132.
+
+### 133.
+
+### 134.
