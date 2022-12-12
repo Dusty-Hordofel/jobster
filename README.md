@@ -3079,6 +3079,26 @@ export default customFetch;
 
 ### 103. Test User
 
+- email : testUser@test.com
+- password : secret
+- read only!
+- dummy data
+
+Register.js
+
+```js
+<button
+  type="button"
+  className="btn btn-block btn-hipster"
+  disabled={isLoading}
+  onClick={() => {
+    dispatch(loginUser({ email: "testUser@test.com", password: "secret" }));
+  }}
+>
+  {isLoading ? "loading..." : "demo"}
+</button>
+```
+
 ### 104.
 
 ### 105.
