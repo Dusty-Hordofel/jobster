@@ -27,11 +27,15 @@ export const getAllJobs = createAsyncThunk(
     let url = `/jobs`;
 
     try {
-      const resp = await customFetch.get(url, {
-        headers: {
-          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      });
+      const resp = await customFetch.get(
+        url
+
+        //   , {
+        //   headers: {
+        //     authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        //   },
+        // }
+      );
 
       console.log("🚀 ~ file: allJobsSlice.js:40 ~ resp.data", resp.data);
       return resp.data;
