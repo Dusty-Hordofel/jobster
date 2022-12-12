@@ -3451,6 +3451,49 @@ const handleSubmit = (e) => {
 
 ### 112. Pagination - Setup
 
+- server returns 10 jobs per page
+
+- create
+
+- components/PageBtnContainer.js
+
+allJobsSlice.js
+
+```js
+    extraReducers:{
+
+    [getAllJobs.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.jobs = payload.jobs;
+      state.numOfPages = payload.numOfPages;
+      state.totalJobs = payload.totalJobs;
+    },
+  }
+
+```
+
+JobsContainer
+
+```js
+const { jobs, isLoading, page, totalJobs, numOfPages } = useSelector(
+  (store) => store.allJobs
+);
+
+return (
+  <Wrapper>
+    <h5>
+      {totalJobs} job{jobs.length > 1 && "s"} found
+    </h5>
+    <div className="jobs">
+      {jobs.map((job) => {
+        return <Job key={job._id} {...job} />;
+      })}
+    </div>
+    {numOfPages > 1 && <PageBtnContainer />}
+  </Wrapper>
+);
+```
+
 ### 113. PageBtnContainer - Structure
 
 ### 114. Change Page Functionality
