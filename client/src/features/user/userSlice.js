@@ -7,6 +7,7 @@ import {
   removeUserFromLocalStorage,
 } from "../../utils/localStorage";
 import {
+  clearStoreThunk,
   loginUserThunk,
   registerUserThunk,
   updateUserThunk,
@@ -70,29 +71,7 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-/*
-export const updateUser = createAsyncThunk(
-  "user/updateUser",
-  async (user, thunkAPI) => {
-    try {
-      const resp = await customFetch.patch("/auth/updateUser", user, {
-        headers: {
-          // authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-          authorization: `Bearer `,
-        },
-      });
-
-      return resp.data;
-    } catch (error) {
-      // console.log(error.response);
-      if (error.response.status === 401) {
-        thunkAPI.dispatch(logoutUser());
-        return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
-      }
-      return thunkAPI.rejectWithValue(error.response.data.msg);
-    }
-  }
-);*/
+export const clearStore = createAsyncThunk("user/clearStore", clearStoreThunk);
 
 const userSlice = createSlice({
   name: "user",
@@ -153,6 +132,10 @@ const userSlice = createSlice({
     [updateUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload);
+    },
+
+    [clearStore.rejected]: () => {
+      toast.error("There was an error");
     },
   },
 }); //create user slice
