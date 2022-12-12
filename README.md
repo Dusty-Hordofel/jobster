@@ -2437,21 +2437,334 @@ Navbar.js
 </button>
 ```
 
-### 88.
+# Section 14: All Job
 
-### 89.
+### 88. AllJobs Slice - Setup
 
-### 90.
+features/allJobs/allJobsSlice.js
 
-### 91.
+```js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
+import customFetch from "../../utils/axios";
 
-### 92.
+const initialFiltersState = {
+  search: "",
+  searchStatus: "all",
+  searchType: "all",
+  sort: "latest",
+  sortOptions: ["latest", "oldest", "a-z", "z-a"],
+};
 
-### 93.
+const initialState = {
+  isLoading: false,
+  jobs: [],
+  totalJobs: 0,
+  numOfPages: 1,
+  page: 1,
+  stats: {},
+  monthlyApplications: [],
+  ...initialFiltersState,
+};
 
-### 94.
+const allJobsSlice = createSlice({
+  name: "allJobs",
+  initialState,
+});
 
-### 95.
+export default allJobsSlice.reducer;
+```
+
+store.js
+
+```js
+import { configureStore } from "@reduxjs/toolkit";
+
+import userSlice from "./features/user/userSlice";
+import jobSlice from "./features/job/jobSlice";
+import allJobsSlice from "./features/allJobs/allJobsSlice";
+
+export const store = configureStore({
+  reducer: {
+    user: userSlice,
+    job: jobSlice,
+    allJobs: allJobsSlice,
+  },
+});
+```
+
+### 89. AllJobs Page Structure
+
+- create
+- components/SearchContainer.js
+- components/JobsContainer.js
+- components/Job.js
+- import/export
+
+AllJobs.js
+
+```js
+import { JobsContainer, SearchContainer } from "../../components";
+
+const AllJobs = () => {
+  return (
+    <>
+      <SearchContainer />
+      <JobsContainer />
+    </>
+  );
+};
+
+export default AllJobs;
+```
+
+### 90. Container Setup
+
+```js
+import { useEffect } from "react";
+import Job from "./Job";
+import Wrapper from "../assets/wrappers/JobsContainer";
+import { useSelector, useDispatch } from "react-redux";
+
+const JobsContainer = () => {
+  const { jobs, isLoading } = useSelector((store) => store.allJobs);
+  const dispatch = useDispatch();
+
+  if (isLoading) {
+    return (
+      <Wrapper>
+        <h2>Loading...</h2>
+      </Wrapper>
+    );
+  }
+
+  if (jobs.length === 0) {
+    return (
+      <Wrapper>
+        <h2>No jobs to display...</h2>
+      </Wrapper>
+    );
+  }
+
+  return (
+    <Wrapper>
+      <h5>jobs info</h5>
+      <div className="jobs">
+        {jobs.map((job) => {
+          return <Job key={job._id} {...job} />;
+        })}
+      </div>
+    </Wrapper>
+  );
+};
+
+export default JobsContainer;
+```
+
+Loading.js
+
+```js
+const Loading = ({ center }) => {
+  return <div className={center ? "loading loading-center" : "loading"}></div>;
+};
+
+export default Loading;
+```
+
+JobsContainer.js
+
+```js
+import Loading from "./Loading";
+
+if (isLoading) {
+  return <Loading center />;
+}
+```
+
+### 91. GetAllJobs Request
+
+- GET /jobs
+- authorization header : 'Bearer token'
+- returns {jobs:[],totalJobs:number, numOfPages:number }
+
+allJobsSlice.js
+
+```js
+export const getAllJobs = createAsyncThunk(
+  'allJobs/getJobs',
+  async (_, thunkAPI) => {
+    let url = `/jobs`;
+
+    try {
+      const resp = await customFetch.get(url, {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+
+      return resp.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
+// extra reducers
+
+extraReducers: {
+[getAllJobs.pending]: (state) => {
+state.isLoading = true;
+},
+[getAllJobs.fulfilled]: (state, { payload }) => {
+state.isLoading = false;
+state.jobs = payload.jobs;
+},
+[getAllJobs.rejected]: (state, { payload }) => {
+state.isLoading = false;
+toast.error(payload);
+},
+}
+```
+
+JobsContainer.js
+
+```js
+import { getAllJobs } from "../features/allJobs/allJobsSlice";
+
+useEffect(() => {
+  dispatch(getAllJobs());
+}, []);
+```
+
+### 92. Job Component Structure
+
+Job.js
+
+```js
+import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import Wrapper from "../assets/wrappers/Job";
+import { useDispatch } from "react-redux";
+
+const Job = ({
+  _id,
+  position,
+  company,
+  jobLocation,
+  jobType,
+  createdAt,
+  status,
+}) => {
+  const dispatch = useDispatch();
+
+  return (
+    <Wrapper>
+      <header>
+        <div className="main-icon">{company.charAt(0)}</div>
+        <div className="info">
+          <h5>{position}</h5>
+          <p>{company}</p>
+        </div>
+      </header>
+      <div className="content">
+        <div className="content-center">
+          <h4>more content</h4>
+          <div className={`status ${status}`}>{status}</div>
+        </div>
+        <footer>
+          <div className="actions">
+            <Link
+              to="/add-job"
+              className="btn edit-btn"
+              onClick={() => {
+                console.log("edit job");
+              }}
+            >
+              Edit
+            </Link>
+            <button
+              type="button"
+              className="btn delete-btn"
+              onClick={() => {
+                console.log("delete  job");
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </footer>
+      </div>
+    </Wrapper>
+  );
+};
+
+export default Job;
+```
+
+### 93. Job Info Component
+
+components/JobInfo.js
+
+```js
+import Wrapper from "../assets/wrappers/JobInfo";
+
+const JobInfo = ({ icon, text }) => {
+  return (
+    <Wrapper>
+      <span className="icon">{icon}</span>
+      <span className="text">{text}</span>
+    </Wrapper>
+  );
+};
+
+export default JobInfo;
+```
+
+Job.js
+
+```js
+const date = createdAt
+
+
+<div className='content-center'>
+  <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
+  <JobInfo icon={<FaCalendarAlt />} text={date} />
+  <JobInfo icon={<FaBriefcase />} text={jobType} />
+  <div className={`status ${status}`}>{status}</div>
+</div>
+
+```
+
+### 94. Moment.js
+
+[moment.js](https://momentjs.com/)
+
+```js
+npm install moment
+```
+
+Job.js
+
+```js
+const date = moment(createdAt).format("MMM Do, YYYY");
+```
+
+### 95. Toggle Loading
+
+```js
+reducers: {
+    showLoading: (state) => {
+      state.isLoading = true;
+    },
+    hideLoading: (state) => {
+      state.isLoading = false;
+    },
+}
+export const {
+  showLoading,
+  hideLoading,
+} = allJobsSlice.actions;
+```
 
 ### 96.
 
