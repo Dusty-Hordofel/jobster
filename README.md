@@ -2703,6 +2703,38 @@ export default Job;
 
 ### 93. Job Info Component
 
+components/JobInfo.js
+
+```js
+import Wrapper from "../assets/wrappers/JobInfo";
+
+const JobInfo = ({ icon, text }) => {
+  return (
+    <Wrapper>
+      <span className="icon">{icon}</span>
+      <span className="text">{text}</span>
+    </Wrapper>
+  );
+};
+
+export default JobInfo;
+```
+
+Job.js
+
+```js
+const date = createdAt
+
+
+<div className='content-center'>
+  <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
+  <JobInfo icon={<FaCalendarAlt />} text={date} />
+  <JobInfo icon={<FaBriefcase />} text={jobType} />
+  <div className={`status ${status}`}>{status}</div>
+</div>
+
+```
+
 ### 94. Moment.js
 
 ### 95. Toggle Loading
