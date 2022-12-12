@@ -3281,7 +3281,7 @@ const ChartsContainer = () => {
 export default ChartsContainer;
 ```
 
-### 109. Charts Complete
+### 109. Charts
 
 - install [Recharts](https://recharts.org/en-US/guide)
 
@@ -3345,60 +3345,98 @@ const BarChartComponent = ({ data }) => {
 export default BarChartComponent;
 ```
 
-### 110.
+# section 18: All Jobs
 
-### 111.
+### 110. Search Container - Setup
 
-### 112.
+```js
+import { FormRow, FormRowSelect } from ".";
+import Wrapper from "../assets/wrappers/SearchContainer";
+import { useSelector, useDispatch } from "react-redux";
 
-### 113.
+const SearchContainer = () => {
+  const { isLoading, search, searchStatus, searchType, sort, sortOptions } =
+    useSelector((store) => store.allJobs);
+  const { jobTypeOptions, statusOptions } = useSelector((store) => store.job);
+  const dispatch = useDispatch();
+  const handleSearch = (e) => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+  return (
+    <Wrapper>
+      <form className="form">
+        <h4>search form</h4>
+        <div className="form-center">
+          {/* search position */}
 
-### 114.
+          <FormRow
+            type="text"
+            name="search"
+            value={search}
+            handleChange={handleSearch}
+          />
+          {/* search by status */}
+          <FormRowSelect
+            labelText="status"
+            name="searchStatus"
+            value={searchStatus}
+            handleChange={handleSearch}
+            list={["all", ...statusOptions]}
+          />
+          {/* search by type */}
+          <FormRowSelect
+            labelText="type"
+            name="searchType"
+            value={searchType}
+            handleChange={handleSearch}
+            list={["all", ...jobTypeOptions]}
+          />
+          {/* sort */}
+          <FormRowSelect
+            name="sort"
+            value={sort}
+            handleChange={handleSearch}
+            list={sortOptions}
+          />
+          <button
+            className="btn btn-block btn-danger"
+            disabled={isLoading}
+            onClick={handleSubmit}
+          >
+            clear filters
+          </button>
+        </div>
+      </form>
+    </Wrapper>
+  );
+};
 
-### 115.
-
-### 116.
-
-### 117.
-
-### 118.
-
-### 119.
-
-### 120.
-
-### 121.
-
-### 122.
-
-### 123.
-
-### 124.
-
-### 125.
-
-### 126.
-
-### 127.
-
-### 128.
-
-### 129.
-
-### 130.
-
-### 131.
-
-### 132.
-
-### 133.
-
-### 134.
-
+export default SearchContainer;
 ```
 
-```
+### 111. Pagination - Setup
 
-```
+### 112. PageBtnContainer - Structure
 
-```
+### 113. Change Page Functionality
+
+### 114. Query Params - Overview
+
+### 115. Change Page an isLoading
+
+### 116. Refactor AllJobs
+
+### 117. Clear Store
+
+### 118. Unauthorized Error
+
+### 119. Refactor Extra Reducers To Builder Notation
+
+# section 19: Debounce Function
+
+### 120. Debounce - Vanilla JS
+
+### 121. Refactor to LocalSearch
+
+### 122. Setup Debounce
