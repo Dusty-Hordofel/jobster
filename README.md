@@ -2775,10 +2775,10 @@ export const {
   jobSlice.js
 
 ```js
-import { showLoading, hideLoading, getAllJobs } from '../allJobs/allJobsSlice';
+import { showLoading, hideLoading, getAllJobs } from "../allJobs/allJobsSlice";
 
 export const deleteJob = createAsyncThunk(
-  'job/deleteJob',
+  "job/deleteJob",
   async (jobId, thunkAPI) => {
     thunkAPI.dispatch(showLoading());
     try {
@@ -2794,7 +2794,7 @@ export const deleteJob = createAsyncThunk(
       return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
-);*
+);
 ```
 
 Job.js
@@ -2929,6 +2929,234 @@ if (isEditing) {
 }
 ```
 
-### 99.
+# section 16: Refactor Application
 
-### 100.
+### 99. Job Thunk
+
+- features/job/jobThunk.js
+
+```js
+import customFetch from "../../utils/axios";
+import { showLoading, hideLoading, getAllJobs } from "../allJobs/allJobsSlice";
+import { clearValues } from "./jobSlice";
+
+export const createJobThunk = async (job, thunkAPI) => {
+  try {
+    const resp = await customFetch.post("/jobs", job, {
+      headers: {
+        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+      },
+    });
+    thunkAPI.dispatch(clearValues());
+    return resp.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+
+export const deleteJobThunk = async (jobId, thunkAPI) => {
+  thunkAPI.dispatch(showLoading());
+  try {
+    const resp = await customFetch.delete(`/jobs/${jobId}`, {
+      headers: {
+        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+      },
+    });
+    thunkAPI.dispatch(getAllJobs());
+    return resp.data;
+  } catch (error) {
+    thunkAPI.dispatch(hideLoading());
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+
+export const editJobThunk = async ({ jobId, job }, thunkAPI) => {
+  try {
+    const resp = await customFetch.patch(`/jobs/${jobId}`, job, {
+      headers: {
+        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+      },
+    });
+    thunkAPI.dispatch(clearValues());
+    return resp.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+```
+
+jobSlice.js
+
+```js
+import { createJobThunk, deleteJobThunk, editJobThunk } from "./jobThunk";
+
+export const createJob = createAsyncThunk("job/createJob", createJobThunk);
+
+export const deleteJob = createAsyncThunk("job/deleteJob", deleteJobThunk);
+
+export const editJob = createAsyncThunk("job/editJob", editJobThunk);
+```
+
+### 100. Authorization Header - File Approach
+
+jobThunk.js
+
+```js
+const authHeader = (thunkAPI) => {
+  return {
+    headers: {
+      authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+    },
+  };
+};
+```
+
+```js
+export const createJobThunk = async (job, thunkAPI) => {
+  try {
+    const resp = await customFetch.post("/jobs", job, authHeader(thunkAPI));
+    thunkAPI.dispatch(clearValues());
+    return resp.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+```
+
+### 101. Authorization Header - Utils Approach
+
+create utils/authHeader.js
+
+```js
+const authHeader = (thunkAPI) => {
+  return {
+    headers: {
+      authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+    },
+  };
+};
+
+export default authHeader;
+```
+
+jobThunk.js
+
+```js
+import authHeader from "../../utils/authHeader";
+```
+
+### 102. Authorization Header - Axios Interceptors Approach
+
+utils/axios.js
+
+```js
+import axios from "axios";
+import { getUserFromLocalStorage } from "./localStorage";
+
+const customFetch = axios.create({
+  baseURL: "https://jobify-prod.herokuapp.com/api/v1/toolkit",
+});
+
+customFetch.interceptors.request.use(
+  (config) => {
+    const user = getUserFromLocalStorage();
+    if (user) {
+      config.headers["Authorization"] = `Bearer ${user.token}`;
+      // in the latest version "common" returns undefined
+      // config.headers.common['Authorization'] = `Bearer ${user.token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export default customFetch;
+```
+
+- remove auth header
+
+### 103. Test User
+
+- email : testUser@test.com
+- password : secret
+- read only!
+- dummy data
+
+Register.js
+
+```js
+<button
+  type="button"
+  className="btn btn-block btn-hipster"
+  disabled={isLoading}
+  onClick={() => {
+    dispatch(loginUser({ email: "testUser@test.com", password: "secret" }));
+  }}
+>
+  {isLoading ? "loading..." : "demo"}
+</button>
+```
+
+### 104.
+
+### 105.
+
+### 106.
+
+### 107.
+
+### 108.
+
+### 109.
+
+### 110.
+
+### 111.
+
+### 112.
+
+### 113.
+
+### 114.
+
+### 115.
+
+### 116.
+
+### 117.
+
+### 118.
+
+### 119.
+
+### 120.
+
+### 121.
+
+### 122.
+
+### 123.
+
+### 124.
+
+### 125.
+
+### 126.
+
+### 127.
+
+### 128.
+
+### 129.
+
+### 130.
+
+### 131.
+
+### 132.
+
+### 133.
+
+### 134.
