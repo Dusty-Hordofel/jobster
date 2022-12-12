@@ -3542,6 +3542,61 @@ export default PageBtnContainer;
 
 ### 114. Change Page Functionality
 
+allJobsSlice.js
+
+```js
+reducers:{
+  changePage: (state, { payload }) => {
+      state.page = payload;
+    },
+}
+export const {
+  showLoading,
+  hideLoading,
+  handleChange,
+  clearFilters,
+  changePage,
+} = allJobsSlice.actions;
+```
+
+PageBtnContainer.js
+
+```js
+import { changePage } from "../features/allJobs/allJobsSlice";
+
+const nextPage = () => {
+  let newPage = page + 1;
+  if (newPage > numOfPages) {
+    newPage = 1;
+  }
+  dispatch(changePage(newPage));
+};
+const prevPage = () => {
+  let newPage = page - 1;
+  if (newPage < 1) {
+    newPage = numOfPages;
+  }
+  dispatch(changePage(newPage));
+};
+
+return (
+  <div className="btn-container">
+    {pages.map((pageNumber) => {
+      return (
+        <button
+          type="button"
+          className={pageNumber === page ? "pageBtn active" : "pageBtn"}
+          key={pageNumber}
+          onClick={() => dispatch(changePage(pageNumber))}
+        >
+          {pageNumber}
+        </button>
+      );
+    })}
+  </div>
+);
+```
+
 ### 115. Query Params - Overview
 
 ### 116. Change Page an isLoading
