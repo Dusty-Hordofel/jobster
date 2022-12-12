@@ -2737,7 +2737,34 @@ const date = createdAt
 
 ### 94. Moment.js
 
+[moment.js](https://momentjs.com/)
+
+```js
+npm install moment
+```
+
+Job.js
+
+```js
+const date = moment(createdAt).format("MMM Do, YYYY");
+```
+
 ### 95. Toggle Loading
+
+```js
+reducers: {
+    showLoading: (state) => {
+      state.isLoading = true;
+    },
+    hideLoading: (state) => {
+      state.isLoading = false;
+    },
+}
+export const {
+  showLoading,
+  hideLoading,
+} = allJobsSlice.actions;
+```
 
 ### 96.
 
