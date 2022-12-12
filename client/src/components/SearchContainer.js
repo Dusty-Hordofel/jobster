@@ -1,6 +1,7 @@
 import { FormRow, FormRowSelect } from ".";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import { clearFilters, handleChange } from "../features/allJobs/allJobsSlice";
 
 const Wrapper = styled.section`
   .form {
@@ -48,9 +49,14 @@ const SearchContainer = () => {
     useSelector((store) => store.allJobs);
   const { jobTypeOptions, statusOptions } = useSelector((store) => store.job);
   const dispatch = useDispatch();
-  const handleSearch = (e) => {};
+
+  const handleSearch = (e) => {
+    if (isLoading) return;
+    dispatch(handleChange({ name: e.target.name, value: e.target.value }));
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(clearFilters());
   };
   return (
     <Wrapper>

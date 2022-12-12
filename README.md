@@ -3415,28 +3415,62 @@ const SearchContainer = () => {
 export default SearchContainer;
 ```
 
-### 111. Pagination - Setup
+### 111. Handle Change and Clear Filters
 
-### 112. PageBtnContainer - Structure
+allJobsSlice.js
 
-### 113. Change Page Functionality
+```js
+reducers:{
+  handleChange: (state, { payload: { name, value } }) => {
+      // state.page = 1;
+      state[name] = value;
+    },
+    clearFilters: (state) => {
+      return { ...state, ...initialFiltersState };
+    },
+}
 
-### 114. Query Params - Overview
+export const { showLoading, hideLoading, handleChange, clearFilters } =
+  allJobsSlice.actions;
+```
 
-### 115. Change Page an isLoading
+SearchContainer.js
 
-### 116. Refactor AllJobs
+```js
+import { handleChange, clearFilters } from "../features/allJobs/allJobsSlice";
 
-### 117. Clear Store
+const handleSearch = (e) => {
+  if (isLoading) return;
+  dispatch(handleChange({ name: e.target.name, value: e.target.value }));
+};
+const handleSubmit = (e) => {
+  e.preventDefault();
+  dispatch(clearFilters());
+};
+```
 
-### 118. Unauthorized Error
+### 112. Pagination - Setup
 
-### 119. Refactor Extra Reducers To Builder Notation
+### 113. PageBtnContainer - Structure
+
+### 114. Change Page Functionality
+
+### 115. Query Params - Overview
+
+### 116. Change Page an isLoading
+
+### 117. Refactor AllJobs
+
+### 118. Clear Store
+
+### 119. Unauthorized Error
+
+### 120. Refactor Extra Reducers To Builder Notation
 
 # section 19: Debounce Function
 
-### 120. Debounce - Vanilla JS
+### 121. Debounce - Vanilla JS
 
-### 121. Refactor to LocalSearch
+### 122. Refactor to LocalSearch
 
-### 122. Setup Debounce
+### 123. Setup Debounce
