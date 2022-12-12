@@ -3113,7 +3113,7 @@ Register.js
 
 allJobsSlice.js
 
-````js
+```js
 export const showStats = createAsyncThunk(
   'allJobs/showStats',
   async (_, thunkAPI) => {
@@ -3142,14 +3142,49 @@ export const showStats = createAsyncThunk(
       toast.error(payload);
     },
 
-    ```
-### 105.
+```
 
-### 106.
+### 105. Stats Page Structure
 
-### 107.
+create
+components/StatsContainer.js
+components/ChartsContainer.js
+import/export
+Stats.js
 
-### 108.
+```js
+import { useEffect } from "react";
+import { StatsContainer, Loading, ChartsContainer } from "../../components";
+import { useDispatch, useSelector } from "react-redux";
+import { showStats } from "../../features/allJobs/allJobsSlice";
+const Stats = () => {
+  const { isLoading, monthlyApplications } = useSelector(
+    (store) => store.allJobs
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(showStats());
+    // eslint-disable-next-line
+  }, []);
+  if (isLoading) {
+    return <Loading center />;
+  }
+  return (
+    <>
+      <StatsContainer />
+      {monthlyApplications.length > 0 && <ChartsContainer />}
+    </>
+  );
+};
+
+export default Stats;
+```
+
+### 106. Stats Container
+
+### 107. Stat Item
+
+### 108. Charts Container
 
 ### 109.
 
@@ -3202,4 +3237,11 @@ export const showStats = createAsyncThunk(
 ### 133.
 
 ### 134.
-````
+
+```
+
+```
+
+```
+
+```
