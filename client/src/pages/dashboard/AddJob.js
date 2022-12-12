@@ -4,7 +4,9 @@ import {
   handleChange,
   clearValues,
   createJob,
+  editJob,
 } from "../../features/job/jobSlice";
+
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { useEffect } from "react";
@@ -100,6 +102,22 @@ const AddJob = () => {
       return;
     }
 
+    if (isEditing) {
+      dispatch(
+        editJob({
+          jobId: editJobId,
+          job: {
+            position,
+            company,
+            jobLocation,
+            jobType,
+            status,
+          },
+        })
+      );
+      return;
+    }
+
     dispatch(createJob({ position, company, jobLocation, jobType, status }));
   };
 
@@ -115,6 +133,7 @@ const AddJob = () => {
       dispatch(handleChange({ name: "jobLocation", value: user.location }));
     }
   }, []);
+
   return (
     <Wrapper>
       <form className="form">
