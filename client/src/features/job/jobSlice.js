@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import customFetch from "../../utils/axios";
 import { getUserFromLocalStorage } from "../../utils/localStorage";
 import { logoutUser } from "../user/userSlice";
+import { showLoading, hideLoading, getAllJobs } from "../allJobs/allJobsSlice";
 
 const initialState = {
   isLoading: false,
@@ -30,7 +31,7 @@ export const createJob = createAsyncThunk(
       return resp.data;
     } catch (error) {
       // basic setup
-      return thunkAPI.rejectWithValue(error.response.data.msg);
+      // return thunkAPI.rejectWithValue(error.response.data.msg);
       // logout user
       if (error.response.status === 401) {
         thunkAPI.dispatch(logoutUser());
