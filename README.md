@@ -3281,7 +3281,69 @@ const ChartsContainer = () => {
 export default ChartsContainer;
 ```
 
-### 109.
+### 109. Charts Complete
+
+- install [Recharts](https://recharts.org/en-US/guide)
+
+AreaChart.js
+
+```js
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
+
+const AreaChartComponent = ({ data }) => {
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <AreaChart data={data} margin={{ top: 50 }}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" />
+        <YAxis allowDecimals={false} />
+        <Tooltip />
+        <Area type="monotone" dataKey="count" stroke="#1e3a8a" fill="#3b82f6" />
+      </AreaChart>
+    </ResponsiveContainer>
+  );
+};
+
+export default AreaChartComponent;
+```
+
+BarChart.js
+
+```js
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+const BarChartComponent = ({ data }) => {
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={data} margin={{ top: 50 }}>
+        <CartesianGrid strokeDasharray="3 3 " />
+        <XAxis dataKey="date" />
+        <YAxis allowDecimals={false} />
+        <Tooltip />
+        <Bar dataKey="count" fill="#3b82f6" barSize={75} />
+      </BarChart>
+    </ResponsiveContainer>
+  );
+};
+
+export default BarChartComponent;
+```
 
 ### 110.
 
