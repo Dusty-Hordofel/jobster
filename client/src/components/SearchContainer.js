@@ -54,6 +54,7 @@ const SearchContainer = () => {
     if (isLoading) return;
     dispatch(handleChange({ name: e.target.name, value: e.target.value }));
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(clearFilters());

@@ -3597,7 +3597,7 @@ return (
 );
 ```
 
-### 115. Query Params - Overview
+### 115. Query Params
 
 allJobsSlice
 
@@ -3641,7 +3641,28 @@ useEffect(() => {
 }, [page, search, searchStatus, searchType, sort]);
 ```
 
-### 116. Change Page an isLoading
+### 116. Change Page and isLoading
+
+allJobsSlice.js
+
+```js
+reducers:{
+  handleChange: (state, { payload: { name, value } }) => {
+      state.page = 1;
+      state[name] = value;
+    },
+    }
+
+```
+
+SearchContainer.js
+
+```js
+const handleSearch = (e) => {
+  if (isLoading) return;
+  dispatch(handleChange({ name: e.target.name, value: e.target.value }));
+};
+```
 
 ### 117. Refactor AllJobs
 
