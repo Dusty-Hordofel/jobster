@@ -3025,6 +3025,26 @@ export const createJobThunk = async (job, thunkAPI) => {
 
 ### 101. Authorization Header - Utils Approach
 
+create utils/authHeader.js
+
+```js
+const authHeader = (thunkAPI) => {
+  return {
+    headers: {
+      authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+    },
+  };
+};
+
+export default authHeader;
+```
+
+jobThunk.js
+
+```js
+import authHeader from "../../utils/authHeader";
+```
+
 ### 102. Authorization Header - Axios Interceptors Approach
 
 ### 103. Test User
