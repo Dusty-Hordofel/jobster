@@ -2813,7 +2813,121 @@ Job.js
 
 ### 97. Set Edit Job
 
+jobSlice.js
+
+```js
+reducers:{
+
+  setEditJob: (state, { payload }) => {
+    return { ...state, isEditing: true, ...payload };
+    },
+  }
+
+  export const { handleChange, clearValues, setEditJob } = jobSlice.actions;
+```
+
+Job.js
+
+```js
+import { setEditJob, deleteJob } from "../features/job/jobSlice";
+
+<Link
+  to="/add-job"
+  className="btn edit-btn"
+  onClick={() => {
+    dispatch(
+      setEditJob({
+        editJobId: _id,
+        position,
+        company,
+        jobLocation,
+        jobType,
+        status,
+      })
+    );
+  }}
+>
+  Edit
+</Link>;
+```
+
+AddJob.js
+
+```js
+useEffect(() => {
+  if (!isEditing) {
+    dispatch(handleChange({ name: "jobLocation", value: user.location }));
+  }
+}, []);
+```
+
 ### 98. Edit Job Request
+
+- PATCH /jobs/jobId
+- { position:'position', company:'company', jobLocation:'location', jobType:'full-time', status:'pending' }
+- authorization header : 'Bearer token'
+- sends back the updated job object
+  jobSlice.js
+
+```js
+export const editJob = createAsyncThunk(
+'job/editJob',
+async ({ jobId, job }, thunkAPI) => {
+try {
+const resp = await customFetch.patch(`/jobs/${jobId}`, job, {
+headers: {
+authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+},
+});
+thunkAPI.dispatch(clearValues());
+return resp.data;
+} catch (error) {
+return thunkAPI.rejectWithValue(error.response.data.msg);
+}
+}
+);
+
+extraReducers:{
+[editJob.pending]: (state) => {
+state.isLoading = true;
+},
+[editJob.fulfilled]: (state) => {
+state.isLoading = false;
+toast.success('Job Modified...');
+},
+[editJob.rejected]: (state, { payload }) => {
+state.isLoading = false;
+toast.error(payload);
+},
+}
+```
+
+AddJob.js
+
+```js
+import {
+  clearValues,
+  handleChange,
+  createJob,
+  editJob,
+} from "../../features/job/jobSlice";
+
+if (isEditing) {
+  dispatch(
+    editJob({
+      jobId: editJobId,
+      job: {
+        position,
+        company,
+        jobLocation,
+        jobType,
+        status,
+      },
+    })
+  );
+  return;
+}
+```
 
 ### 99.
 

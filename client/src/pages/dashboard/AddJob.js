@@ -115,6 +115,7 @@ const AddJob = () => {
       dispatch(handleChange({ name: "jobLocation", value: user.location }));
     }
   }, []);
+
   return (
     <Wrapper>
       <form className="form">
