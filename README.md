@@ -2766,16 +2766,55 @@ export const {
 } = allJobsSlice.actions;
 ```
 
-### 96.
+# section 15: handle Job
 
-### 97.
+### 96. Delete Job Request
 
-### 98.
+- DELETE /jobs/jobId
+- authorization header : 'Bearer token'
+  jobSlice.js
+
+```js
+import { showLoading, hideLoading, getAllJobs } from '../allJobs/allJobsSlice';
+
+export const deleteJob = createAsyncThunk(
+  'job/deleteJob',
+  async (jobId, thunkAPI) => {
+    thunkAPI.dispatch(showLoading());
+    try {
+      const resp = await customFetch.delete(`/jobs/${jobId}`, {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+      thunkAPI.dispatch(getAllJobs());
+      return resp.data;
+    } catch (error) {
+      thunkAPI.dispatch(hideLoading());
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);*
+```
+
+Job.js
+
+```js
+<button
+  type="button"
+  className="btn delete-btn"
+  onClick={() => {
+    dispatch(deleteJob(_id));
+  }}
+>
+  Delete
+</button>
+```
+
+### 97. Set Edit Job
+
+### 98. Edit Job Request
 
 ### 99.
 
 ### 100.
-
-```
-
-```
